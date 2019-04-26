@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="table13">Bord 13</string>
+    <string name="table1" translatable="false">Bord 1</string>
+    <string name="table10" translatable="false">Bord 10</string>
+    <string name="table11" translatable="false">Bord 11</string>
+    <string name="table12" translatable="false">Bord 12</string>
+    <string name="table14" translatable="false">Bord 14</string>
+    <string name="table2" translatable="false">Bord 2</string>
+    <string name="table3" translatable="false">Bord 3</string>
+    <string name="table4" translatable="false">Bord 4</string>
+    <string name="table5" translatable="false">Bord 5</string>
+    <string name="table6" translatable="false">Bord 6</string>
+    <string name="table7" translatable="false">Bord 7</string>
+    <string name="table8" translatable="false">Bord 8</string>
+    <string name="table15">Bord 15</string>
+    <string name="table20">Bord 20</string>
+    <string name="table16">Bord 16</string>
+    <string name="table21">Bord 21</string>
+    <string name="table17">Bord 17</string>
+    <string name="table18">Bord 18</string>
+    <string name="table19">Bord 19</string>
+    <string name="table26">Bord 26</string>
+    <string name="table29">Bord 29</string>
+    <string name="table22">Bord 22</string>
+    <string name="table27">Bord 27</string>
+    <string name="table30">Bord 30</string>
+    <string name="table25">Bord 25</string>
+    <string name="table23">Bord 23</string>
+    <string name="table24">Bord 24</string>
+    <string name="table28">Bord 28</string>
+    <string name="table9">Bord 9</string>
+    <string name="reservation_title">Reservationer</string>
+    <string name="table_title">Bord</string>
+    <string name="time_title">Tid</string>
+    <string name="select_date">Vælg dato</string>
+    <string name="mobilenumber_title">Mobilnummer</string>
+    <string name="gues_title">Gæster</string>
+    <string name="add_reservation_button">Tap til at tilføj en reservation</string>
+    <string name="help_button_text">Hjælp</string>
+    <string name="order_drink_button_text">Bestil Drikkevarer</string>
+    <string name="other_order_button_text">Bestil Andet</string>
+    <string name="ready_to_submit_button">Klar til Aflevering</string>
+    <string name="app_name">Takii Sushi Bord Reservation</string>
+</resources>
