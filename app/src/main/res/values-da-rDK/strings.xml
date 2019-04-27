@@ -34,8 +34,8 @@
     <string name="table_title">Bord</string>
     <string name="time_title">Tid</string>
     <string name="select_date">Vælg dato</string>
-    <string name="mobilenumber_title">Mobilnummer</string>
-    <string name="gues_title">Gæster</string>
+    <string name="mobile_number_title">Mobilnummer</string>
+    <string name="guest_title">Gæster</string>
     <string name="add_reservation_button">Tap til at tilføj en reservation</string>
     <string name="help_button_text">Hjælp</string>
     <string name="order_drink_button_text">Bestil Drikkevarer</string>

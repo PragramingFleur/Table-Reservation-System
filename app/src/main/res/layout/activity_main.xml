@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/stationary_assets"
+            android:background="@drawable/mobile_stationary_assets"
             android:orientation="vertical">
 
             <LinearLayout
@@ -38,7 +38,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table4"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_window" />
+                        app:srcCompat="@drawable/mobile_table_window" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -56,7 +56,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table7"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_window" />
+                        app:srcCompat="@drawable/mobile_table_window" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -72,7 +72,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table8"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_window" />
+                        app:srcCompat="@drawable/mobile_table_window" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -96,7 +96,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table3"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_short" />
+                        app:srcCompat="@drawable/table_small" />
 
                 </FrameLayout>
 
@@ -113,7 +113,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table5"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_short" />
+                        app:srcCompat="@drawable/table_small" />
 
                 </FrameLayout>
 
@@ -132,7 +132,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table6"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_short" />
+                        app:srcCompat="@drawable/table_small" />
 
                 </FrameLayout>
 
@@ -152,7 +152,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table10"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_short" />
+                        app:srcCompat="@drawable/table_small" />
 
                 </FrameLayout>
 
@@ -170,7 +170,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table12"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_short" />
+                        app:srcCompat="@drawable/table_small" />
 
                 </FrameLayout>
 
@@ -193,7 +193,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table2"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table" />
+                        app:srcCompat="@drawable/mobile_table" />
 
                 </FrameLayout>
 
@@ -210,7 +210,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table9"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_short" />
+                        app:srcCompat="@drawable/table_small" />
 
                 </FrameLayout>
 
@@ -227,7 +227,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table11"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_short" />
+                        app:srcCompat="@drawable/table_small" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -244,7 +244,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table13"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table" />
+                        app:srcCompat="@drawable/mobile_table" />
 
                 </FrameLayout>
             </LinearLayout>
@@ -268,7 +268,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table1"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table" />
+                        app:srcCompat="@drawable/mobile_table" />
 
                 </FrameLayout>
 
@@ -286,7 +286,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table14"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table" />
+                        app:srcCompat="@drawable/mobile_table" />
 
                 </FrameLayout>
             </LinearLayout>
@@ -358,7 +358,7 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginLeft="32dp"
                         android:layout_marginTop="32dp"
-                        android:text="@string/gues_title"
+                        android:text="@string/guest_title"
                         app:layout_constraintStart_toEndOf="@+id/textView7"
                         app:layout_constraintTop_toBottomOf="@+id/dateViewer" />
 
@@ -380,7 +380,7 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginLeft="32dp"
                         android:layout_marginTop="32dp"
-                        android:text="@string/mobilenumber_title"
+                        android:text="@string/mobile_number_title"
                         app:layout_constraintStart_toEndOf="@+id/textView10"
                         app:layout_constraintTop_toBottomOf="@+id/dateViewer" />
 
@@ -436,7 +436,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/table15"
                             android:focusable="true"
-                            app:srcCompat="@drawable/table" />
+                            app:srcCompat="@drawable/mobile_table" />
 
                     </FrameLayout>
 
@@ -457,7 +457,7 @@
                                 android:clickable="true"
                                 android:contentDescription="@string/table20"
                                 android:focusable="true"
-                                app:srcCompat="@drawable/table" />
+                                app:srcCompat="@drawable/mobile_table" />
                         </FrameLayout>
 
                         <FrameLayout
@@ -474,7 +474,7 @@
                                 android:clickable="true"
                                 android:contentDescription="@string/table16"
                                 android:focusable="true"
-                                app:srcCompat="@drawable/table_short" />
+                                app:srcCompat="@drawable/table_small" />
 
                         </FrameLayout>
                     </LinearLayout>
@@ -498,7 +498,7 @@
                                 android:clickable="true"
                                 android:contentDescription="@string/table21"
                                 android:focusable="true"
-                                app:srcCompat="@drawable/table" />
+                                app:srcCompat="@drawable/mobile_table" />
 
                         </FrameLayout>
 
@@ -521,7 +521,7 @@
                                     android:clickable="true"
                                     android:contentDescription="@string/table17"
                                     android:focusable="true"
-                                    app:srcCompat="@drawable/table_short" />
+                                    app:srcCompat="@drawable/table_small" />
                             </FrameLayout>
 
                             <FrameLayout
@@ -538,7 +538,7 @@
                                     android:clickable="true"
                                     android:contentDescription="@string/table18"
                                     android:focusable="true"
-                                    app:srcCompat="@drawable/table_short" />
+                                    app:srcCompat="@drawable/table_small" />
                             </FrameLayout>
                         </LinearLayout>
 
@@ -554,7 +554,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table19"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table" />
+                        app:srcCompat="@drawable/mobile_table" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -570,7 +570,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/table26"
                             android:focusable="true"
-                            app:srcCompat="@drawable/table_short" />
+                            app:srcCompat="@drawable/table_small" />
 
                         <ImageView
                             android:id="@+id/table29"
@@ -585,7 +585,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/table29"
                             android:focusable="true"
-                            app:srcCompat="@drawable/table_short" />
+                            app:srcCompat="@drawable/table_small" />
 
                         <ImageView
                             android:id="@+id/table22"
@@ -598,7 +598,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/table22"
                             android:focusable="true"
-                            app:srcCompat="@drawable/table_short" />
+                            app:srcCompat="@drawable/table_small" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -617,7 +617,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/table27"
                             android:focusable="true"
-                            app:srcCompat="@drawable/table_27" />
+                            app:srcCompat="@drawable/mobile_table_27" />
 
                         <ImageView
                             android:id="@+id/table30"
@@ -630,7 +630,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/table30"
                             android:focusable="true"
-                            app:srcCompat="@drawable/table_short" />
+                            app:srcCompat="@drawable/table_small" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -646,7 +646,7 @@
                                 android:clickable="true"
                                 android:contentDescription="@string/table23"
                                 android:focusable="true"
-                                app:srcCompat="@drawable/table_short" />
+                                app:srcCompat="@drawable/table_small" />
 
                             <ImageView
                                 android:id="@+id/table24"
@@ -659,7 +659,7 @@
                                 android:clickable="true"
                                 android:contentDescription="@string/table24"
                                 android:focusable="true"
-                                app:srcCompat="@drawable/table_short" />
+                                app:srcCompat="@drawable/table_small" />
 
                             <ImageView
                                 android:id="@+id/table25"
@@ -671,7 +671,7 @@
                                 android:clickable="true"
                                 android:contentDescription="@string/table25"
                                 android:focusable="true"
-                                app:srcCompat="@drawable/table_short" />
+                                app:srcCompat="@drawable/table_small" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -686,7 +686,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table28"
                         android:focusable="true"
-                        app:srcCompat="@drawable/table_28" />
+                        app:srcCompat="@drawable/mobile_table_28" />
 
                 </LinearLayout>
 
