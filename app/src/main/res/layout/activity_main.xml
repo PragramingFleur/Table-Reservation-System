@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/mobile_stationary_assets"
+            android:background="@drawable/stationary_assets"
             android:orientation="vertical">
 
             <LinearLayout
@@ -23,57 +23,42 @@
                 android:layout_marginBottom="34dp"
                 android:orientation="horizontal">
 
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="41dp"
+                    android:layout_marginLeft="42dp"
+                    android:layout_marginEnd="85dp"
+                    android:layout_marginRight="85dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table4"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_4" />
 
-                    <ImageView
-                        android:id="@+id/table4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="41dp"
-                        android:layout_marginLeft="41dp"
-                        android:layout_marginEnd="85dp"
-                        android:layout_marginRight="85dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table4"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table_window" />
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table7"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="89dp"
+                    android:layout_marginLeft="89dp"
+                    android:layout_marginEnd="42dp"
+                    android:layout_marginRight="42dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table7"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_window" />
 
-                    <ImageView
-                        android:id="@+id/table7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="80dp"
-                        android:layout_marginLeft="80dp"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginRight="30dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table7"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table_window" />
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table8"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/table8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="26dp"
-                        android:layout_marginLeft="26dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table8"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table_window" />
-                </FrameLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginLeft="26dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table8"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_window" />
 
             </LinearLayout>
 
@@ -82,97 +67,67 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginTop="17dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table3"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_small" />
 
-                    <ImageView
-                        android:id="@+id/table3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="35dp"
-                        android:layout_marginLeft="35dp"
-                        android:layout_marginTop="17dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table3"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/table_small" />
-
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table5"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="115dp"
+                    android:layout_marginLeft="115dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table5"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_small" />
 
-                    <ImageView
-                        android:id="@+id/table5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="115dp"
-                        android:layout_marginLeft="115dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table5"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/table_small" />
+                <ImageView
+                    android:id="@+id/table6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="85dp"
+                    android:layout_marginLeft="85dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table6"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_small" />
 
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table10"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:layout_marginLeft="38dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginRight="25dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table10"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_small" />
 
-                    <ImageView
-                        android:id="@+id/table6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="85dp"
-                        android:layout_marginLeft="85dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table6"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/table_small" />
-
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table12"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/table10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="38dp"
-                        android:layout_marginLeft="38dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="25dp"
-                        android:layout_marginRight="25dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table10"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/table_small" />
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/table12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="46dp"
-                        android:layout_marginLeft="46dp"
-                        android:layout_marginTop="8dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table12"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/table_small" />
-
-                </FrameLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="46dp"
+                    android:layout_marginLeft="46dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table12"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_small" />
 
             </LinearLayout>
 
@@ -181,72 +136,50 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="38dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table2"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table" />
 
-                    <ImageView
-                        android:id="@+id/table2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="38dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table2"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table" />
-
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table9"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="303dp"
+                    android:layout_marginLeft="303dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table9"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_small" />
 
-                    <ImageView
-                        android:id="@+id/table9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="303dp"
-                        android:layout_marginLeft="303dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table9"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/table_small" />
-
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table11"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="71dp"
+                    android:layout_marginLeft="71dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table11"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table_small" />
 
-                    <ImageView
-                        android:id="@+id/table11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="71dp"
-                        android:layout_marginLeft="71dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table11"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/table_small" />
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table13"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="58dp"
+                    android:layout_marginLeft="58dp"
+                    android:layout_marginTop="41dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table13"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table" />
 
-                    <ImageView
-                        android:id="@+id/table13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="58dp"
-                        android:layout_marginLeft="58dp"
-                        android:layout_marginTop="41dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table13"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table" />
-
-                </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -254,41 +187,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="64dp"
+                    android:layout_marginEnd="200dp"
+                    android:layout_marginRight="200dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table1"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table" />
 
-                    <ImageView
-                        android:id="@+id/table1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="64dp"
-                        android:layout_marginEnd="200dp"
-                        android:layout_marginRight="200dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table1"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table" />
-
-                </FrameLayout>
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/table14"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="324dp"
+                    android:layout_marginLeft="324dp"
+                    android:layout_marginTop="68dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/table14"
+                    android:focusable="true"
+                    app:srcCompat="@drawable/table" />
 
-                    <ImageView
-                        android:id="@+id/table14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="324dp"
-                        android:layout_marginLeft="324dp"
-                        android:layout_marginTop="68dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/table14"
-                        android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table" />
-
-                </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -301,7 +223,7 @@
                     android:layout_width="431dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="30dp"
-                    android:background="#E5E5E5">
+                    android:background="#E4E4E4">
 
                     <ImageView
                         android:id="@+id/imageView5"
@@ -404,16 +326,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
-                        android:background="@drawable/ic_add_circle_black_40dp"
                         android:clickable="true"
                         android:focusable="true"
+                        android:scaleType="fitXY"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView6"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_add_circle_black_40dp" />
+                        app:backgroundTint="#8BC34A"
+                        app:srcCompat="@drawable/ic_add_grey_48dp" />
 
                 </android.support.constraint.ConstraintLayout>
 
@@ -422,61 +345,45 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <FrameLayout
+                    <ImageView
+                        android:id="@+id/table15"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/table15"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="216dp"
-                            android:layout_marginLeft="216dp"
-                            android:layout_marginTop="64dp"
-                            android:clickable="true"
-                            android:contentDescription="@string/table15"
-                            android:focusable="true"
-                            app:srcCompat="@drawable/mobile_table" />
-
-                    </FrameLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="216dp"
+                        android:layout_marginLeft="216dp"
+                        android:layout_marginTop="64dp"
+                        android:clickable="true"
+                        android:contentDescription="@string/table15"
+                        android:focusable="true"
+                        app:srcCompat="@drawable/table" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <FrameLayout
+                        <ImageView
+                            android:id="@+id/table20"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="96dp"
+                            android:clickable="true"
+                            android:contentDescription="@string/table20"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/table" />
 
-                            <ImageView
-                                android:id="@+id/table20"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="96dp"
-                                android:clickable="true"
-                                android:contentDescription="@string/table20"
-                                android:focusable="true"
-                                app:srcCompat="@drawable/mobile_table" />
-                        </FrameLayout>
-
-                        <FrameLayout
+                        <ImageView
+                            android:id="@+id/table16"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="140dp"
+                            android:layout_marginLeft="140dp"
+                            android:layout_marginTop="80dp"
+                            android:clickable="true"
+                            android:contentDescription="@string/table16"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/table_small" />
 
-                            <ImageView
-                                android:id="@+id/table16"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="140dp"
-                                android:layout_marginLeft="140dp"
-                                android:layout_marginTop="80dp"
-                                android:clickable="true"
-                                android:contentDescription="@string/table16"
-                                android:focusable="true"
-                                app:srcCompat="@drawable/table_small" />
-
-                        </FrameLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -484,62 +391,47 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <FrameLayout
+                        <ImageView
+                            android:id="@+id/table21"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:id="@+id/table21"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="67dp"
-                                android:layout_marginEnd="50dp"
-                                android:layout_marginRight="50dp"
-                                android:clickable="true"
-                                android:contentDescription="@string/table21"
-                                android:focusable="true"
-                                app:srcCompat="@drawable/mobile_table" />
-
-                        </FrameLayout>
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="67dp"
+                            android:layout_marginEnd="50dp"
+                            android:layout_marginRight="50dp"
+                            android:clickable="true"
+                            android:contentDescription="@string/table21"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/table" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <FrameLayout
+                            <ImageView
+                                android:id="@+id/table17"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="90dp"
+                                android:layout_marginLeft="90dp"
+                                android:layout_marginTop="12dp"
+                                android:clickable="true"
+                                android:contentDescription="@string/table17"
+                                android:focusable="true"
+                                app:srcCompat="@drawable/table_small" />
 
-                                <ImageView
-                                    android:id="@+id/table17"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="90dp"
-                                    android:layout_marginLeft="90dp"
-                                    android:layout_marginTop="12dp"
-                                    android:clickable="true"
-                                    android:contentDescription="@string/table17"
-                                    android:focusable="true"
-                                    app:srcCompat="@drawable/table_small" />
-                            </FrameLayout>
-
-                            <FrameLayout
+                            <ImageView
+                                android:id="@+id/table18"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="90dp"
+                                android:layout_marginLeft="90dp"
+                                android:layout_marginTop="30dp"
+                                android:clickable="true"
+                                android:contentDescription="@string/table18"
+                                android:focusable="true"
+                                app:srcCompat="@drawable/table_small" />
 
-                                <ImageView
-                                    android:id="@+id/table18"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="90dp"
-                                    android:layout_marginLeft="90dp"
-                                    android:layout_marginTop="30dp"
-                                    android:clickable="true"
-                                    android:contentDescription="@string/table18"
-                                    android:focusable="true"
-                                    app:srcCompat="@drawable/table_small" />
-                            </FrameLayout>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -554,7 +446,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table19"
                         android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table" />
+                        app:srcCompat="@drawable/table" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -617,7 +509,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/table27"
                             android:focusable="true"
-                            app:srcCompat="@drawable/mobile_table_27" />
+                            app:srcCompat="@drawable/table_27" />
 
                         <ImageView
                             android:id="@+id/table30"
@@ -686,7 +578,7 @@
                         android:clickable="true"
                         android:contentDescription="@string/table28"
                         android:focusable="true"
-                        app:srcCompat="@drawable/mobile_table_28" />
+                        app:srcCompat="@drawable/table_28" />
 
                 </LinearLayout>
 
