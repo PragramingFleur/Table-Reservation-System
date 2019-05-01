@@ -223,31 +223,19 @@
                     android:layout_width="431dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="30dp"
-                    android:background="#E4E4E4">
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="32dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_calendar"
-                        tools:ignore="ContentDescription" />
+                    android:background="#192c3a">
 
                     <TextView
                         android:id="@+id/dateViewer"
                         android:layout_width="81dp"
                         android:layout_height="21dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:text="@string/select_date"
-                        app:layout_constraintStart_toEndOf="@+id/imageView5"
+                        app:layout_constraintEnd_toStartOf="@+id/textView6"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -322,21 +310,42 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/floatingActionButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:clickable="true"
                         android:focusable="true"
-                        android:scaleType="fitXY"
+                        android:scaleType="fitCenter"
+                        app:backgroundTint="@color/colorAccent"
+                        app:borderWidth="0dp"
+                        app:fabSize="mini"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView6"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:backgroundTint="#8BC34A"
+                        app:maxImageSize="36dp"
                         app:srcCompat="@drawable/ic_add_grey_48dp" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/calendarButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:backgroundTint="#00192C3A"
+                        app:fabSize="mini"
+                        app:layout_constraintEnd_toStartOf="@+id/dateViewer"
+                        app:layout_constraintHorizontal_bias="0.02"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:rippleColor="#355880"
+                        app:srcCompat="@drawable/ic_date_range_grey_48dp" />
 
                 </android.support.constraint.ConstraintLayout>
 
