@@ -42,4 +42,7 @@
     <string name="other_order_button_text">Bestil Andet</string>
     <string name="ready_to_submit_button">Klar til Aflevering</string>
     <string name="app_name">Takii Sushi Bord Reservation</string>
+    <string name="name_field">Navn</string>
+    <string name="adult_field">Voksne Gæster</string>
+    <string name="children_field">Børne Gæster</string>
 </resources>
