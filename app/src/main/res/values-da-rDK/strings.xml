@@ -45,4 +45,5 @@
     <string name="name_field">Navn</string>
     <string name="adult_field">Voksne Gæster</string>
     <string name="children_field">Børne Gæster</string>
+    <string name="table_layout_title">Bord Oversigt</string>
 </resources>

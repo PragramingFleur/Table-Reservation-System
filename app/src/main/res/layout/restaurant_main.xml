@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rajasharan.layout.RearrangeableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/restaurant_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_woodfloor"
+    android:clipToPadding="false"
+    android:padding="12dp"
+    app:outlineColor="@color/colorAccent"
+    app:outlineWidth="2dp"
+    app:selectionAlpha="0.5"
+    app:selectionZoom="1.2">
+
+    <!-- add child views with `android:id` attr to
+        save position during orientation change -->
+    <FrameLayout
+        android:id="@+id/table1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table1"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table1TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table1" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table2"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table2TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table2" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table3"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table3TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table3" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_4"
+        android:clickable="true"
+        android:contentDescription="@string/table4"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table4TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table4" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table5"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table5TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table5" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table6"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table6TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table6" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_window"
+        android:clickable="true"
+        android:contentDescription="@string/table7"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table7TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table7" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_window"
+        android:clickable="true"
+        android:contentDescription="@string/table8"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table8TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table8" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table9"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table9TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table9" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table10"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table10TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table10" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table11"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table11TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table11" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table12"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table12TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table12" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table13"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table13TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table13" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table14"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table14TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table14" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table15"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table15TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table15" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table16"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table16TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table16" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table17"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table17TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table17" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table18"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table18TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table18" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table19"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table19TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table19" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table20"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table20TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table20" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table"
+        android:clickable="true"
+        android:contentDescription="@string/table21"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table21TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table21" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table22"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table22TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table22" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table23"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table23TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table23" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table24"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table24TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table24" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table25"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table25TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table25" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table26"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table26TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table26" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_27"
+        android:clickable="true"
+        android:contentDescription="@string/table27"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table27TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table27" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_28"
+        android:clickable="true"
+        android:contentDescription="@string/table28"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table28TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table28" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table29"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table29TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table29" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/table30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_small"
+        android:clickable="true"
+        android:contentDescription="@string/table30"
+        android:focusable="true"
+        android:foregroundGravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/table30TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/table30" />
+    </FrameLayout>
+
+    <!-- more child views -->
+
+</com.rajasharan.layout.RearrangeableLayout>

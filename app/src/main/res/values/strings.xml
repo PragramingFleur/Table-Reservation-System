@@ -77,4 +77,5 @@
         <item>29</item>
         <item>30</item>
     </string-array>
+    <string name="table_layout_title">Restaurant Layout</string>
 </resources>
