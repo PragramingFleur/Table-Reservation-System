@@ -12,12 +12,12 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class ReservationMainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.reservation_main);
 
         ImageView datePickerButtonA = findViewById(R.id.calendarButton);
         TextView datePickerButtonB = findViewById(R.id.dateViewer);

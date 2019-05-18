@@ -1,12 +1,14 @@
 package res.takiisushi.tablereservationsystem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.rajasharan.layout.RearrangeableLayout;
@@ -41,9 +43,25 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toReservationItem:
+                Intent intent = new Intent(this, ReservationMainActivity.class);
+                this.startActivity(intent);
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.example_menu, menu);
+        inflater.inflate(R.menu.restaurant_layout_menu, menu);
         return true;
     }
 
