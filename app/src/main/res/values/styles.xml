@@ -8,14 +8,4 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/textColorPrimary</item>>
     </style>
-
-    <!-- Light application theme. -->
-    <style name="AppTheme.Light" parent="Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorLight</item>
-        <item name="colorPrimaryDark">@color/colorLightDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textColorLight</item>>
-    </style>
-
 </resources>
