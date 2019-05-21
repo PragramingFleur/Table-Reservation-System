@@ -1,38 +1,36 @@
 package res.takiisushi.tablereservationsystem;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import java.text.DateFormat;
-import java.util.Calendar;
+import android.widget.Toast;
 
 public class AddReservationDialog extends AppCompatDialogFragment
-        implements AdapterView.OnItemSelectedListener,
-        DatePickerDialog.OnDateSetListener {
+        implements AdapterView.OnItemSelectedListener {
+
     private EditText editTextName;
     private EditText editTextNumber;
     private EditText editTextAdultGuestNum;
     private EditText editTextChildGuestNumber;
-    private EditText editTextTimeHour;
-    private EditText editTextTimeMinute;
+    private EditText spinnerTimeHour;
+    private EditText spinnerTimeMinute;
     private EditText editTextDate;
     private AddReservationDialogListener listener;
+    private Spinner hourDropdown;
+    private Spinner minuteDropdown;
     private Spinner tableDropdown;
     private int tableNum = 0;
+    private int hour = 13;
+    private int minute = 00;
     private View view;
 
     @Override
@@ -44,17 +42,15 @@ public class AddReservationDialog extends AppCompatDialogFragment
 
         view = inflater.inflate(R.layout.layout_add_reservation_dialog, null);
 
-        openDialogs(view);
-
         builder.setView(view);
-        builder.setTitle("Add Reservation");
-        builder.setNegativeButton("Afbrud", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.reservation_title));
+        builder.setNegativeButton(getString(R.string.cancel_text), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        builder.setPositiveButton("Reserver", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.reserve_text), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String name = editTextName.getText().toString();
@@ -65,40 +61,39 @@ public class AddReservationDialog extends AppCompatDialogFragment
                     System.out.println("Could not parse " + nfe);
                 }
                 String guestInformation = editTextAdultGuestNum.getText().toString() + "V + " + editTextChildGuestNumber.getText().toString() + "B";
-                String date = editTextDate.getText().toString();
-                String time = editTextTimeHour.getText().toString() + ":" + editTextTimeMinute.getText().toString();
-                listener.saveReservation(name, mobileNumber, guestInformation, date, time, tableNum);
+                String datetime = String.format(editTextDate.getText().toString() + " " + hour + ":%tM"), minute;
+
+                listener.saveReservation(name, mobileNumber, guestInformation, datetime, tableNum);
             }
         });
         editTextName = view.findViewById(R.id.editName);
         editTextNumber = view.findViewById(R.id.editMobileNum);
         editTextAdultGuestNum = view.findViewById(R.id.editAdultGuestNum);
         editTextChildGuestNumber = view.findViewById(R.id.editChildrenGuestNum);
-        editTextTimeHour = view.findViewById(R.id.hourSpinner);
-        editTextTimeMinute = view.findViewById(R.id.minuteSpinner);
         editTextDate = view.findViewById(R.id.editDate);
 
-        //Table dropdown
+        //populating Hour dropdown
+        hourDropdown = view.findViewById(R.id.hourSpinner);
+        ArrayAdapter<CharSequence> adapterHour = ArrayAdapter.createFromResource(this.getContext(), R.array.hours, android.R.layout.simple_spinner_item);
+        adapterHour.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hourDropdown.setAdapter(adapterHour);
+        hourDropdown.setOnItemSelectedListener(this);
+
+        //populating minute dropdown
+        minuteDropdown = view.findViewById(R.id.minuteSpinner);
+        ArrayAdapter<CharSequence> adapterMinute = ArrayAdapter.createFromResource(this.getContext(), R.array.minutes, android.R.layout.simple_spinner_item);
+        adapterMinute.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        minuteDropdown.setAdapter(adapterMinute);
+        minuteDropdown.setOnItemSelectedListener(this);
+
+        //populating Table dropdown
         tableDropdown = view.findViewById(R.id.tableSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.table_Numbers, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tableDropdown.setAdapter(adapter);
+        ArrayAdapter<CharSequence> adapterTable = ArrayAdapter.createFromResource(this.getContext(), R.array.table_Numbers, android.R.layout.simple_spinner_item);
+        adapterTable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tableDropdown.setAdapter(adapterTable);
         tableDropdown.setOnItemSelectedListener(this);
 
         return builder.create();
-    }
-
-    private void openDialogs(View v) {
-        //'Button' for opening the time picker and date picker for reservation
-        EditText reservationDatePicker = v.findViewById(R.id.editDate);
-
-        reservationDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment datePicker = new DatePickerFragment();
-                datePicker.show(getActivity().getSupportFragmentManager(), "date picker");
-            }
-        });
     }
 
     @Override
@@ -108,14 +103,27 @@ public class AddReservationDialog extends AppCompatDialogFragment
         try {
             listener = (AddReservationDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement AddReservationDialogListener");
+            throw new ClassCastException(context.toString() + " must implement AddReservationDialogListener");
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         try {
-            tableNum = Integer.parseInt(parent.getItemAtPosition(position).toString());
+            switch (parent.getId()) {
+                case R.id.tableSpinner:
+                    tableNum = Integer.parseInt(parent.getItemAtPosition(position).toString());
+                    break;
+                case R.id.hourSpinner:
+                    hour = Integer.parseInt(parent.getItemAtPosition(position).toString());
+                    break;
+                case R.id.minuteSpinner:
+                    minute = Integer.parseInt(parent.getItemAtPosition(position).toString());
+                    break;
+                default:
+                    Toast.makeText(parent.getContext(), "nothing happened", Toast.LENGTH_SHORT);
+                    break;
+            }
         } catch (NumberFormatException nfe) {
             System.out.println("Could not parse " + nfe);
         }
@@ -126,21 +134,7 @@ public class AddReservationDialog extends AppCompatDialogFragment
 
     }
 
-    @Override
-    public void onDateSet(DatePicker dView, int year, int month, int dayOfMonth) {
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        String currentDateString = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
-
-        TextView dateTextView = view.findViewById(R.id.editDate);
-        dateTextView.setText(currentDateString);
-    }
-
     public interface AddReservationDialogListener {
-        void saveReservation(String name, int mobileNumber, String guestInformation, String date, String time, int table);
+        void saveReservation(String name, int mobileNumber, String guestInformation, String datetime, int table);
     }
 }

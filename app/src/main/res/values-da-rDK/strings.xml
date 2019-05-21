@@ -46,4 +46,7 @@
     <string name="adult_field">Voksne Gæster</string>
     <string name="children_field">Børne Gæster</string>
     <string name="table_layout_title">Bord Oversigt</string>
+    <string name="search_hint">Søge Mobil Nummer Her</string>
+    <string name="cancel_text">Afbrud</string>
+    <string name="reserve_text">Reserver</string>
 </resources>
