@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_reservation"
         android:title="To Reservation Pressed"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/addReservationItem"
+        android:icon="@drawable/ic_add_grey_48dp"
+        android:title="Add Reservation Pressed"
+        app:showAsAction="always" />
 </menu>

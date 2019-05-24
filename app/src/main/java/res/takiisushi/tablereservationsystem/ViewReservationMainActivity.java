@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,21 +15,26 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-public class ReservationMainActivity extends AppCompatActivity
-        implements DatePickerDialog.OnDateSetListener,
-        AddReservationDialog.AddReservationDialogListener {
+public class ViewReservationMainActivity extends AppCompatActivity
+        implements DatePickerDialog.OnDateSetListener {
+    private static final String TAG = "VIEW-RESERVATION";
+    TextView dateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservation_main);
+        dateTextView = findViewById(R.id.dateViewer);
+
+        Date dateToday = Calendar.getInstance().getTime();
+        dateTextView.setText(dateToday.toString());
 
         setupActionBar();
 
         //Buttons and methods to open the datepicker dialogs to choose a date to view of reservations
         FloatingActionButton datePickerButtonA = findViewById(R.id.calendarButton);
-        TextView datePickerButtonB = findViewById(R.id.dateViewer);
 
         datePickerButtonA.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +44,7 @@ public class ReservationMainActivity extends AppCompatActivity
             }
         });
 
-        datePickerButtonB.setOnClickListener(new View.OnClickListener() {
+        dateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment();
@@ -65,7 +69,6 @@ public class ReservationMainActivity extends AppCompatActivity
 
         String currentDateString = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
 
-        TextView dateTextView = findViewById(R.id.dateViewer);
         dateTextView.setText(currentDateString);
     }
 
@@ -75,11 +78,12 @@ public class ReservationMainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.addReservationItem:
                 intent = new Intent(this, AddReservationMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(intent);
-                this.finish();
                 break;
-            case R.id.home:
+            case android.R.id.home:
                 intent = new Intent(this, RestaurantLayoutMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(intent);
                 this.finish();
                 break;
@@ -96,15 +100,5 @@ public class ReservationMainActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.reservation_layout_menu, menu);
         return true;
-    }
-
-    @Override
-    public void saveReservation(String name, int mobileNumber, String guestInformation, String datetime, int table) {
-        Log.d("saveReservation", "saveReservation: " +
-                "TODO: Save " + name + " " + mobileNumber
-                + " " + guestInformation
-                + " " + datetime
-                + " " + table
-                + " to DB");
     }
 }

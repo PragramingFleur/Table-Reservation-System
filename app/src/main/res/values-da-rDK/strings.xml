@@ -49,4 +49,7 @@
     <string name="search_hint">Søge Mobil Nummer Her</string>
     <string name="cancel_text">Afbrud</string>
     <string name="reserve_text">Reserver</string>
+    <string name="add_reservation_title">Ny Reservation</string>
+    <string name="date_title">Dato</string>
+    <string name="select_time">Vælg tid</string>
 </resources>

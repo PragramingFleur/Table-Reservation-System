@@ -44,12 +44,18 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.toReservationItem:
-                Intent intent = new Intent(this, ReservationMainActivity.class);
+                intent = new Intent(this, ViewReservationMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(intent);
                 break;
-
+            case R.id.addReservationItem:
+                intent = new Intent(this, AddReservationMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(intent);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
