@@ -2,10 +2,14 @@ package res.takiisushi.tablereservationsystem;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,12 +19,13 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class ViewReservationMainActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "VIEW-RESERVATION";
     TextView dateTextView;
+    private SQLiteDatabase database;
+    private ReservationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +33,25 @@ public class ViewReservationMainActivity extends AppCompatActivity
         setContentView(R.layout.reservation_main);
         dateTextView = findViewById(R.id.dateViewer);
 
-        Date dateToday = Calendar.getInstance().getTime();
-        dateTextView.setText(dateToday.toString());
+        RecyclerView recyclerView = findViewById(R.id.reservationRecyclerView);
+
+        ReservationDBHelper dbHelper = ReservationDBHelper.getInstance(this);
+        database = dbHelper.getWritableDatabase();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = ReservationAdapter.getAdapter(this, getAllItems());
+        recyclerView.setAdapter(adapter);
+
+        String dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime());
+        dateTextView.setText(dateToday);
 
         setupActionBar();
 
         //Buttons and methods to open the datepicker dialogs to choose a date to view of reservations
-        FloatingActionButton datePickerButtonA = findViewById(R.id.calendarButton);
+        FloatingActionButton datePickerButton = findViewById(R.id.calendarButton);
 
-        datePickerButtonA.setOnClickListener(new View.OnClickListener() {
+        datePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment();
@@ -53,6 +68,18 @@ public class ViewReservationMainActivity extends AppCompatActivity
         });
     }
 
+    private Cursor getAllItems() {
+        return database.query(
+                ReservationContract.ReservationEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
+        );
+    }
+
     private void setupActionBar() {
         getSupportActionBar().setTitle(getString(R.string.reservation_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,7 +94,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        String currentDateString = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+        String currentDateString = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
 
         dateTextView.setText(currentDateString);
     }

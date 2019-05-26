@@ -2,7 +2,10 @@ package res.takiisushi.tablereservationsystem;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -30,20 +33,43 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import res.takiisushi.tablereservationsystem.ReservationContract.ReservationEntry;
+
 public class AddReservationMainActivity extends AppCompatActivity
         implements TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
         AdapterView.OnItemSelectedListener {
+
     private static final String TAG = "ADD-RESERVATION";
-    String tableSelected;
+    String tableSelected = "";
     int spinnerId = 0;
 
+    private EditText editName;
+    private EditText editNumber;
+    private TextView editDate;
+    private TextView editTime;
+    private EditText editAdultGuestNum;
+    private EditText editChildGuestNum;
+
+    private SQLiteDatabase database;
+    private ReservationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation_main);
         final LinearLayout root = findViewById(R.id.spinnerLayout);
+
+        editName = findViewById(R.id.editName);
+        editNumber = findViewById(R.id.editMobileNum);
+        editDate = findViewById(R.id.selectDateNewReservation);
+        editTime = findViewById(R.id.selectTimeNewReservation);
+        editAdultGuestNum = findViewById(R.id.editAdultGuestNum);
+        editChildGuestNum = findViewById(R.id.editChildrenGuestNum);
+
+        ReservationDBHelper dbHelper = ReservationDBHelper.getInstance(this);
+        database = dbHelper.getWritableDatabase();
+        adapter = ReservationAdapter.getAdapter(this, getAllItems());
 
         setupActionBar();
 
@@ -57,109 +83,153 @@ public class AddReservationMainActivity extends AppCompatActivity
         addReservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isCorrect = checkFields();
-                if (isCorrect == true) {
-                    //addReservationToDB();
+                boolean isCorrect = checkFields(editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
+                if (isCorrect) {
+                    addReservationToDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
                 }
             }
         });
     }
 
-    private boolean checkFields() {
-        List<Boolean> isCorrectCollection = new ArrayList<>();
-        boolean isCorrect;
+    private Cursor getAllItems() {
+        return database.query(
+                ReservationContract.ReservationEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
+        );
+    }
 
-        EditText editNumber = findViewById(R.id.editMobileNum);
-        TextView editDate = findViewById(R.id.selectDateNewReservation);
-        TextView editTime = findViewById(R.id.selectTimeNewReservation);
-        EditText editAdultGuestNum = findViewById(R.id.editAdultGuestNum);
-        EditText editChildGuestNum = findViewById(R.id.editChildrenGuestNum);
-        List<String> tableList = Arrays.asList(tableSelected.split(","));
+    private void addReservationToDB(EditText editName, EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
+        String guests = "V: " + editAdultGuestNum.getText().toString() + " B: " + editChildGuestNum.getText().toString();
+        ContentValues values = new ContentValues();
+        values.put(ReservationEntry.COLUMN_NAME, editName.getText().toString().trim());
+        values.put(ReservationEntry.COLUMN_NUMBER, editNumber.getText().toString().trim());
+        values.put(ReservationEntry.COLUMN_TIME, editTime.getText().toString());
+        values.put(ReservationEntry.COLUMN_DATE, editDate.getText().toString());
+        values.put(ReservationEntry.COLUMN_GUESTS, guests);
+        values.put(ReservationEntry.COLUMN_TABLES, tableSelected);
+
+        database.insert(ReservationEntry.TABLE_NAME, null, values);
+        adapter.swapCursor(getAllItems());
+
+        Intent intent = new Intent(this, ViewReservationMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+    }
+
+    private boolean checkFields(EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
+        List<Boolean> isCorrectCollection = new ArrayList<>();
+        boolean isCorrect = false;
+
         Calendar c = Calendar.getInstance();
         Date today = c.getTime();
 
+        TextView tableWarning = findViewById(R.id.tableTextView);
+
         //Check if required fields are filled out
-        if (editNumber.getText().toString().trim().length() < 8) {
+        if (editNumber.getText().toString().trim().length() < 8 || editNumber.getText().toString().trim().length() > 8) {
             //Number field is empty or less than 8digits which is wrong
             isCorrectCollection.add(false);
             editNumber.setError("Invalid Number");
         } else if (editNumber.getText().toString().trim().isEmpty()) {
             isCorrectCollection.add(false);
             editNumber.setError("Required");
-        } else if (!editDate.getText().toString().isEmpty()) {
+        }
+
+        if (!editDate.getText().toString().isEmpty()) {
             //If date textview is not empty then check if the date is before today
-            Date strDate = null;
+            String datePicked = editDate.getText().toString();
             try {
-                strDate = new SimpleDateFormat("yyyy/MM/dd").parse(editDate.getText().toString());
+                Date strDate = new SimpleDateFormat("yyyy/MM/dd").parse(datePicked);
+
+                if (today.after(strDate)) {
+                    //date isn't supposed to be before today
+                    isCorrectCollection.add(false);
+                    editDate.setError("Date has to be today or later");
+                } else {
+                    isCorrectCollection.add(true);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if (strDate.before(today)) {
-                //date isn't supposed to be before today
-                isCorrectCollection.add(false);
-                editDate.setError("Date has to be today or after");
-            } else {
-                isCorrectCollection.add(true);
-            }
-
         } else if (editDate.getText().toString().isEmpty()) {
             isCorrectCollection.add(false);
             editDate.setError("Required");
-        } else if (!editTime.getText().toString().isEmpty()) {
-            //Check if time is between 13:00 and 22:00
-            String selectedTime = editTime.getText().toString();
-            String minTime = "13:00";
-            String maxTime = "22:00";
+        }
 
-            Date selectedTimeConverted = null;
-            Date minTimeConverted = null;
-            Date maxTimeConverted = null;
+        if (!editTime.getText().toString().isEmpty()) {
+            //Check if time is between 13:00 and 22:00
             try {
-                selectedTimeConverted = new SimpleDateFormat("HH:mm").parse(selectedTime);
-                minTimeConverted = new SimpleDateFormat("HH:mm").parse(minTime);
-                maxTimeConverted = new SimpleDateFormat("HH:mm").parse(maxTime);
+                String selectedTime = editTime.getText().toString();
+                String minTime = "13:00";
+                String maxTime = "22:00";
+
+                Date selectedTimeConverted = new SimpleDateFormat("HH:mm").parse(selectedTime);
+                Date minTimeConverted = new SimpleDateFormat("HH:mm").parse(minTime);
+                Date maxTimeConverted = new SimpleDateFormat("HH:mm").parse(maxTime);
+
+                Calendar calendar = Calendar.getInstance();
+                Calendar calendarA = Calendar.getInstance();
+                Calendar calendarB = Calendar.getInstance();
+
+                calendar.setTime(selectedTimeConverted);
+                calendarA.setTime(minTimeConverted);
+                calendarB.setTime(maxTimeConverted);
+
+                if (calendar.getTime().after(calendarA.getTime()) && calendar.getTime().before(calendarB.getTime())) {
+                    isCorrectCollection.add(true);
+                } else {
+                    isCorrectCollection.add(false);
+                    editTime.setError("Time is not between 13:00 and 22:00");
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Calendar calendar = Calendar.getInstance();
-            Calendar calendarA = Calendar.getInstance();
-            Calendar calendarB = Calendar.getInstance();
-
-            calendar.setTime(selectedTimeConverted);
-            calendarA.setTime(minTimeConverted);
-            calendarB.setTime(maxTimeConverted);
-
-            if (calendar.getTime().after(calendarA.getTime()) && calendar.getTime().before(calendarB.getTime())) {
-                isCorrectCollection.add(true);
-            } else {
-                isCorrectCollection.add(false);
-                editTime.setError("Time is not between 13:00 and 22:00");
-            }
-
         } else if (editTime.getText().toString().isEmpty()) {
             //Check if time is empty
             isCorrectCollection.add(false);
             editTime.setError("Required");
-        } else if (Integer.parseInt(editAdultGuestNum.getText().toString()) == 0) {
-            //check if guest number is 0
+        }
+
+        if (!editAdultGuestNum.getText().toString().isEmpty()) {
+            if (Integer.parseInt(editAdultGuestNum.getText().toString()) == 0) {
+                //check if guest number is 0
+                isCorrectCollection.add(false);
+                editAdultGuestNum.setError("Guest Number should be 1 or Above");
+            } else if (Integer.parseInt(editAdultGuestNum.getText().toString()) > 0) {
+                isCorrectCollection.add(true);
+            }
+        } else {
             isCorrectCollection.add(false);
-            editAdultGuestNum.setError("Guest Number should be 1 or Above");
-        } else if (Integer.parseInt(editAdultGuestNum.getText().toString()) > 0) {
-            isCorrectCollection.add(true);
-        } else if (Integer.parseInt(editChildGuestNum.getText().toString()) == 0) {
-            //check if guest number is 0
+            editAdultGuestNum.setError("Required");
+        }
+
+        if (!editChildGuestNum.getText().toString().isEmpty()) {
+            if (Integer.parseInt(editChildGuestNum.getText().toString()) == 0) {
+                //check if guest number is 0
+                isCorrectCollection.add(false);
+                editAdultGuestNum.setError("Guest Number should be 1 or Above");
+            } else if (Integer.parseInt(editChildGuestNum.getText().toString()) > 0) {
+                isCorrectCollection.add(true);
+            }
+        } else {
             isCorrectCollection.add(false);
-            editAdultGuestNum.setError("Guest Number should be 1 or Above");
-        } else if (Integer.parseInt(editChildGuestNum.getText().toString()) > 0) {
-            isCorrectCollection.add(true);
-        } else if (!tableSelected.isEmpty()) {
+            editChildGuestNum.setError("Required");
+        }
+
+        if (!tableSelected.isEmpty()) {
             //Checking for duplicate tables
+            List<String> tableList = Arrays.asList(tableSelected.split(","));
+
             if (tableList.size() > 1) {
                 final Set<Integer> set = new HashSet<>();
 
                 for (String string : tableList) {
                     if (!set.add(Integer.parseInt(string))) {
-                        TextView tableWarning = findViewById(R.id.tableTextView);
                         tableWarning.setError("Cannot Repeat Table number");
                         isCorrectCollection.add(false);
                         break;
@@ -170,6 +240,7 @@ public class AddReservationMainActivity extends AppCompatActivity
             }
         } else {
             isCorrectCollection.add(true);
+            tableWarning.setError("Need Table");
         }
 
         isCorrect = !isCorrectCollection.contains(false);
