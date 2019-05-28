@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,8 +59,10 @@ public class AddReservationMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation_main);
+        //initialize the layout for adding the spinner to
         final LinearLayout root = findViewById(R.id.spinnerLayout);
 
+        //Initializing all fields from the form
         editName = findViewById(R.id.editName);
         editNumber = findViewById(R.id.editMobileNum);
         editDate = findViewById(R.id.selectDateNewReservation);
@@ -67,14 +70,18 @@ public class AddReservationMainActivity extends AppCompatActivity
         editAdultGuestNum = findViewById(R.id.editAdultGuestNum);
         editChildGuestNum = findViewById(R.id.editChildrenGuestNum);
 
+        //Initializing DB and adaptor
         ReservationDBHelper dbHelper = ReservationDBHelper.getInstance(this);
         database = dbHelper.getWritableDatabase();
         adapter = ReservationAdapter.getAdapter(this, getAllItems());
 
+        //Sets up action bar menus and title
         setupActionBar();
 
+        //Sets up dialogs for the time and date picker
         setupDialogs();
 
+        //Method for deleting the last spinner and adding a spinner for choosing tables
         createDeleteTableSpinner(root);
 
         //Button and click listener for when add Reservation is clicked
@@ -83,8 +90,10 @@ public class AddReservationMainActivity extends AppCompatActivity
         addReservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Makes sure fields are correct before adding to db
                 boolean isCorrect = checkFields(editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
                 if (isCorrect) {
+                    //adds reservation to the db
                     addReservationToDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
                 }
             }
@@ -310,8 +319,16 @@ public class AddReservationMainActivity extends AppCompatActivity
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        String selectedDateString = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
+
         TextView editDate = findViewById(R.id.selectDateNewReservation);
-        editDate.setText(year + "-" + month + "-" + dayOfMonth);
+        editDate.setText(selectedDateString);
     }
 
     @Override
