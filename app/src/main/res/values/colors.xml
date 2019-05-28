@@ -6,4 +6,6 @@
     <color name="textAppearanceColorPrimary">#000000</color>
 
     <color name="colorAccent">#C15C68</color>
+    <color name="colorReserved">#81d4fa</color>
+    <color name="colorTaken">#ef9a9a</color>
 </resources>

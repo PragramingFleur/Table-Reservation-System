@@ -202,6 +202,9 @@ public class AddReservationMainActivity extends AppCompatActivity
             //Check if time is empty
             isCorrectCollection.add(false);
             editTime.setError("Required");
+        } else {
+            isCorrectCollection.add(false);
+            editTime.setError("Incorrect Time");
         }
 
         if (!editAdultGuestNum.getText().toString().isEmpty()) {
@@ -217,14 +220,8 @@ public class AddReservationMainActivity extends AppCompatActivity
             editAdultGuestNum.setError("Required");
         }
 
-        if (!editChildGuestNum.getText().toString().isEmpty()) {
-            if (Integer.parseInt(editChildGuestNum.getText().toString()) == 0) {
-                //check if guest number is 0
-                isCorrectCollection.add(false);
-                editAdultGuestNum.setError("Guest Number should be 1 or Above");
-            } else if (Integer.parseInt(editChildGuestNum.getText().toString()) > 0) {
-                isCorrectCollection.add(true);
-            }
+        if (editChildGuestNum.getText().toString().isEmpty()) {
+            editChildGuestNum.setText("0");
         } else {
             isCorrectCollection.add(false);
             editChildGuestNum.setError("Required");
