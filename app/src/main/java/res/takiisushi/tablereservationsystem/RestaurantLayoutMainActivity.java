@@ -274,7 +274,11 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         if (status.equals("Taken") || status.equals("Optaget")) {
             layout.getBackground().setColorFilter(getResources().getColor(R.color.colorTaken), PorterDuff.Mode.OVERLAY);
         } else if (status.equals("Available") || status.equals("Ledig")) {
-            layout.getBackground().clearColorFilter();
+            if (layout.getChildCount() > 1) {
+                layout.getBackground().setColorFilter(getResources().getColor(R.color.colorReserved), PorterDuff.Mode.OVERLAY);
+            } else {
+                layout.getBackground().clearColorFilter();
+            }
         } else if (status.equals("Needs Cleaning") || status.equals("Skal Ryddes")) {
             layout.getBackground().setColorFilter(getResources().getColor(R.color.colorCleaning), PorterDuff.Mode.OVERLAY);
         }
@@ -572,8 +576,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
             tableStatusdatabase.update(TableStatusContract.TableStatusEntry.TABLE_NAME, values, TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "='" + childName + "'", null);
         }
 
-        finish();
-        startActivity(getIntent());
+        checkAndApplyTableStatutes();
     }
 
     @Override
