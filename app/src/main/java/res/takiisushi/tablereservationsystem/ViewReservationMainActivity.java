@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,7 +46,19 @@ public class ViewReservationMainActivity extends AppCompatActivity
         dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime());
         dateTextView.setText(dateToday);
 
-        setUpDBRecyclerView();
+        RecyclerView recyclerView = setUpDBRecyclerView();
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                removeItem((Long) viewHolder.itemView.getTag());
+            }
+        }).attachToRecyclerView(recyclerView);
 
         setupActionBar();
 
@@ -77,7 +91,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
         });
     }
 
-    public void setUpDBRecyclerView() {
+    public RecyclerView setUpDBRecyclerView() {
         //updating recycler view to view data from DB for today
         //getting recycler view
         recyclerView = findViewById(R.id.reservationRecyclerView);
@@ -93,6 +107,8 @@ public class ViewReservationMainActivity extends AppCompatActivity
         adapter = ReservationAdapter.getAdapter(mContext, getMatchingDateItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
         adapter.swapCursor(getMatchingDateItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
         recyclerView.setAdapter(adapter);
+
+        return recyclerView;
     }
 
     private void initializeDialogs() {
@@ -146,6 +162,12 @@ public class ViewReservationMainActivity extends AppCompatActivity
         getSupportActionBar().setTitle(getString(R.string.reservation_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    private void removeItem(long id) {
+        database.delete(ReservationContract.ReservationEntry.TABLE_NAME,
+                ReservationContract.ReservationEntry._ID + "=" + id, null);
+        adapter.swapCursor(getMatchingDateItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateTextView.getText().toString()));
     }
 
     @Override

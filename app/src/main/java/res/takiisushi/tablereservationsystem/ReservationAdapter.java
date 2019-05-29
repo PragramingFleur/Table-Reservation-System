@@ -48,11 +48,13 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         String guests = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS));
         String table = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES));
         String number = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NUMBER));
+        long id = mCursor.getLong(mCursor.getColumnIndex(ReservationContract.ReservationEntry._ID));
 
         reservationViewHolder.timeText.setText(time);
         reservationViewHolder.guestsText.setText(guests);
         reservationViewHolder.tableText.setText(table);
         reservationViewHolder.numberText.setText(number);
+        reservationViewHolder.itemView.setTag(id);
     }
 
     @Override
