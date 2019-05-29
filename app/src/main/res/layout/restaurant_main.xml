@@ -4,8 +4,10 @@
     android:id="@+id/restaurant_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@drawable/light_woodfloor"
     android:clipToPadding="false"
+    android:foregroundGravity="center"
     android:padding="12dp"
     app:outlineColor="@color/colorAccent"
     app:outlineWidth="2dp"
@@ -14,17 +16,20 @@
 
     <!-- add child views with `android:id` attr to
         save position during orientation change -->
-    <FrameLayout
-        android:id="@+id/table1"
+    <LinearLayout
+        android:id="@+id/table1Linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table1"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/table1"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table1TextView"
@@ -33,19 +38,23 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table1" />
-    </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/table2"
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/table2Linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table2"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/table2"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table2TextView"
@@ -54,19 +63,22 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table2" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table3"
+    <LinearLayout
+        android:id="@+id/table3Linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table3"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/table_3"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table3TextView"
@@ -75,19 +87,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table3" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table4Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="@drawable/table_4"
-        android:clickable="true"
-        android:contentDescription="@string/table4"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table4TextView"
@@ -96,19 +105,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table4" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table5Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table5"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_5"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table5TextView"
@@ -117,19 +123,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table5" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table6"
+    <LinearLayout
+        android:id="@+id/table6Linear"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table6"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_6"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table6TextView"
@@ -138,19 +141,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table6" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table7Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_window"
-        android:clickable="true"
-        android:contentDescription="@string/table7"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_7"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table7TextView"
@@ -159,19 +159,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table7" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table8Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_window"
-        android:clickable="true"
-        android:contentDescription="@string/table8"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_8"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table8TextView"
@@ -180,19 +177,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table8" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table9Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table9"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_9"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table9TextView"
@@ -201,19 +195,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table9" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table10Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table10"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_10"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table10TextView"
@@ -222,19 +213,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table10" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table11Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table11"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_11"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table11TextView"
@@ -243,18 +231,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table11" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table12"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+    <LinearLayout
+        android:id="@+id/table12Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:background="@drawable/table_12"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table12TextView"
@@ -263,19 +249,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table12" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table13Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table13"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table13"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table13TextView"
@@ -284,19 +267,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table13" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table14Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table14"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table14"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table14TextView"
@@ -305,19 +285,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table14" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table15Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table15"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table15"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table15TextView"
@@ -326,19 +303,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table15" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table16Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table16"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_16"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table16TextView"
@@ -347,19 +321,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table16" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table17Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table17"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_17"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table17TextView"
@@ -368,19 +339,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table17" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table18Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table18"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_18"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table18TextView"
@@ -389,19 +357,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table18" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table19Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table19"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table19"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table19TextView"
@@ -409,20 +374,18 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
+            android:padding="4dp"
             android:text="@string/table19" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table20Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table20"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table20"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table20TextView"
@@ -431,19 +394,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table20" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table21Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table"
-        android:clickable="true"
-        android:contentDescription="@string/table21"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table21"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table21TextView"
@@ -452,19 +412,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table21" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table22Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table22"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_22"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table22TextView"
@@ -473,19 +430,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table22" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table23"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table23Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table23"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_23"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table23TextView"
@@ -494,19 +448,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table23" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table24"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table24Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table24"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_24"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table24TextView"
@@ -515,19 +466,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table24" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table25"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table25Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table25"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_25"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table25TextView"
@@ -536,19 +484,17 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table25" />
-    </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/table26"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/table26Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table26"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_26"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table26TextView"
@@ -557,19 +503,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table26" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table27"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table27Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="@drawable/table_27"
-        android:clickable="true"
-        android:contentDescription="@string/table27"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table27TextView"
@@ -578,19 +521,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table27" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table28"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table28Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="@drawable/table_28"
-        android:clickable="true"
-        android:contentDescription="@string/table28"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table28TextView"
@@ -599,19 +539,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table28" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table29Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table29"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_29"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table29TextView"
@@ -620,19 +557,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table29" />
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/table30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/table30Linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@drawable/table_small"
-        android:clickable="true"
-        android:contentDescription="@string/table30"
-        android:focusable="true"
-        android:foregroundGravity="center"
-        android:padding="8dp">
+        android:background="@drawable/table_30"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/table30TextView"
@@ -641,7 +575,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/table30" />
-    </FrameLayout>
+    </LinearLayout>
 
     <!-- more child views -->
 

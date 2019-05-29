@@ -1,5 +1,6 @@
 package res.takiisushi.tablereservationsystem;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,51 +8,61 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.rajasharan.layout.RearrangeableLayout;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class RestaurantLayoutMainActivity extends AppCompatActivity {
+public class RestaurantLayoutMainActivity extends AppCompatActivity implements TableStatusDialog.TableStatusDialogListener {
     private static final String TAG = "REST-REARRANGEABLE-LOUT";
     private Context mContext;
     String dateToday = "";
-    private SQLiteDatabase database;
+    private SQLiteDatabase tableStatusdatabase;
+    private SQLiteDatabase reservationDatabase;
+    private String childName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
 
+        //Initializing DB
+        TableStatusDBHelper dbHelper = TableStatusDBHelper.getInstance(this);
+        tableStatusdatabase = dbHelper.getWritableDatabase();
+
+        //Initializing DB
+        ReservationDBHelper dbHelper1 = ReservationDBHelper.getInstance(this);
+        reservationDatabase = dbHelper1.getWritableDatabase();
+
         getSupportActionBar().setTitle(getString(R.string.table_layout_title));
 
         setContentView(R.layout.restaurant_main);
-        File res = mContext.getFileStreamPath("tables.jpeg");
 
         checkAndApplyReservations();
 
-        /*if (res != null){
-            getSavedCanvas(); //Doesn't work
-        }*/
+        checkAndApplyTableStatutes();
 
-
-        /*final RearrangeableLayout root = findViewById(R.id.restaurant_layout);
+        final RearrangeableLayout root = findViewById(R.id.restaurant_layout);
         root.setChildPositionListener(new RearrangeableLayout.ChildPositionListener() {
             @Override
             public void onChildMoved(View childView, Rect oldPosition, Rect newPosition) {
@@ -59,17 +70,220 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
                 Log.d(TAG, oldPosition.toString() + " -> " + newPosition.toString());
                 //saveTable(root.getContext(), childView);//Doesn't seem to work
             }
-        });*/
+        });
 
+        File res = mContext.getFileStreamPath("tables.jpeg");
+        if (res != null) {
+            getSavedCanvas(); //Doesn't work
+        }
+
+        for (int counter = 0; counter < root.getChildCount(); counter++) {
+            LinearLayout layout = (LinearLayout) root.getChildAt(counter);
+            MyClickListener listener = new MyClickListener();
+            layout.setOnClickListener(listener);
+        }
         //getSavedTables(root);//doesn't work
+    }
+
+    public void openTableStatusDialog() {
+        Log.d(TAG, "openTableStatusDialog: opened");
+        TableStatusDialog dialog = new TableStatusDialog();
+        dialog.show(getSupportFragmentManager(), "table status dialog");
+    }
+
+    private void checkAndApplyTableStatutes() {
+        List<String> statusList = new ArrayList<>();
+        List<String> tablesList = new ArrayList<>();
+
+        Cursor cursor = null;
+
+        try {
+            cursor = getAllItemsTableStatus();
+
+            while (cursor.moveToNext()) {
+                String status = cursor.getString(cursor.getColumnIndex(TableStatusContract.TableStatusEntry.COLUMN_STATUS));
+
+                statusList.add(status);
+
+                String table = cursor.getString(cursor.getColumnIndex(TableStatusContract.TableStatusEntry.COLUMN_TABLENUM));
+
+                tablesList.add(table);
+            }
+        } catch (Exception ex) {
+            // Handle exception
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+
+        for (int counter = 0; counter < tablesList.size(); counter++) {
+            if (tablesList.get(counter).equals("Table 1")) {
+                LinearLayout linearLayout = findViewById(R.id.table1Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table1");
+            }
+            if (tablesList.get(counter).equals("Table 2")) {
+                LinearLayout linearLayout = findViewById(R.id.table2Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table2");
+            }
+            if (tablesList.get(counter).equals("Table 3")) {
+                LinearLayout linearLayout = findViewById(R.id.table3Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table3");
+            }
+            if (tablesList.get(counter).equals("Table 4")) {
+                LinearLayout linearLayout = findViewById(R.id.table4Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table4");
+            }
+            if (tablesList.get(counter).equals("Table 5")) {
+                LinearLayout linearLayout = findViewById(R.id.table5Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table5");
+            }
+            if (tablesList.get(counter).equals("Table 6")) {
+                LinearLayout linearLayout = findViewById(R.id.table6Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table6");
+            }
+            if (tablesList.get(counter).equals("Table 7")) {
+                LinearLayout linearLayout = findViewById(R.id.table7Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table7");
+            }
+            if (tablesList.get(counter).equals("Table 8")) {
+                LinearLayout linearLayout = findViewById(R.id.table8Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table8");
+            }
+            if (tablesList.get(counter).equals("Table 9")) {
+                LinearLayout linearLayout = findViewById(R.id.table9Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table9");
+            }
+            if (tablesList.get(counter).equals("Table 10")) {
+                LinearLayout linearLayout = findViewById(R.id.table10Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table10");
+            }
+            if (tablesList.get(counter).equals("Table 11")) {
+                LinearLayout linearLayout = findViewById(R.id.table11Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table11");
+            }
+            if (tablesList.get(counter).equals("Table 12")) {
+                LinearLayout linearLayout = findViewById(R.id.table12Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table12");
+            }
+            if (tablesList.get(counter).equals("Table 13")) {
+                LinearLayout linearLayout = findViewById(R.id.table13Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table13");
+            }
+            if (tablesList.get(counter).equals("Table 14")) {
+                LinearLayout linearLayout = findViewById(R.id.table14Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table14");
+            }
+            if (tablesList.get(counter).equals("Table 15")) {
+                LinearLayout linearLayout = findViewById(R.id.table15Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table15");
+            }
+            if (tablesList.get(counter).equals("Table 16")) {
+                LinearLayout linearLayout = findViewById(R.id.table16Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table16");
+            }
+            if (tablesList.get(counter).equals("Table 17")) {
+                LinearLayout linearLayout = findViewById(R.id.table17Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table17");
+            }
+            if (tablesList.get(counter).equals("Table 18")) {
+                LinearLayout linearLayout = findViewById(R.id.table18Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table18");
+            }
+            if (tablesList.get(counter).equals("Table 19")) {
+                LinearLayout linearLayout = findViewById(R.id.table19Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table19");
+            }
+            if (tablesList.get(counter).equals("Table 20")) {
+                LinearLayout linearLayout = findViewById(R.id.table20Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table20");
+            }
+            if (tablesList.get(counter).equals("Table 21")) {
+                LinearLayout linearLayout = findViewById(R.id.table21Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table21");
+            }
+            if (tablesList.get(counter).equals("Table 22")) {
+                LinearLayout linearLayout = findViewById(R.id.table22Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table22");
+            }
+            if (tablesList.get(counter).equals("Table 23")) {
+                LinearLayout linearLayout = findViewById(R.id.table23Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table23");
+            }
+            if (tablesList.get(counter).equals("Table 24")) {
+                LinearLayout linearLayout = findViewById(R.id.table24Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table24");
+            }
+            if (tablesList.get(counter).equals("Table 25")) {
+                LinearLayout linearLayout = findViewById(R.id.table25Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table25");
+            }
+            if (tablesList.get(counter).equals("Table 26")) {
+                LinearLayout linearLayout = findViewById(R.id.table26Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table26");
+            }
+            if (tablesList.get(counter).equals("Table 27")) {
+                LinearLayout linearLayout = findViewById(R.id.table27Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table27");
+            }
+            if (tablesList.get(counter).equals("Table 28")) {
+                LinearLayout linearLayout = findViewById(R.id.table28Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table28");
+            }
+            if (tablesList.get(counter).equals("Table 29")) {
+                LinearLayout linearLayout = findViewById(R.id.table29Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table29");
+            }
+            if (tablesList.get(counter).equals("Table 30")) {
+                LinearLayout linearLayout = findViewById(R.id.table30Linear);
+                addTableStatus(linearLayout, statusList.get(counter));
+                Log.d(TAG, "checkAndApplyTableStatutes: table30");
+            }
+        }
+
+    }
+
+    private void addTableStatus(LinearLayout layout, String status) {
+        if (status.equals("Taken") || status.equals("Optaget")) {
+            layout.getBackground().setColorFilter(getResources().getColor(R.color.colorTaken), PorterDuff.Mode.OVERLAY);
+        } else if (status.equals("Available") || status.equals("Ledig")) {
+            layout.getBackground().clearColorFilter();
+        } else if (status.equals("Needs Cleaning") || status.equals("Skal Ryddes")) {
+            layout.getBackground().setColorFilter(getResources().getColor(R.color.colorCleaning), PorterDuff.Mode.OVERLAY);
+        }
     }
 
     private void checkAndApplyReservations() {
         //getting Todays date
         dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime());
-        //getting database
-        ReservationDBHelper dbHelper = ReservationDBHelper.getInstance(mContext);
-        database = dbHelper.getWritableDatabase();
+
         String[] columns = new String[]{ReservationContract.ReservationEntry.COLUMN_TABLES, ReservationContract.ReservationEntry.COLUMN_TIME};
 
         List<String> tableList = new ArrayList<>();
@@ -79,7 +293,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
         Cursor cursor = null;
 
         try {
-            cursor = getMatchingItems(columns, dateToday);
+            cursor = getMatchingItemsReservation(columns, dateToday);
 
             while (cursor.moveToNext()) {
                 String tables = cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES));
@@ -119,143 +333,194 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
         for (String timeTable : timeTablesSeperatedList) {
             List<String> temp = Arrays.asList(timeTable.split(","));
             Log.d(TAG, "checkAndApplyReservations: " + temp.get(1));
-            int tableCount = 30;
-            for (int counter = 1; counter <= tableCount; counter++) {
-                if (temp.get(1).equals("1")) {
-                    FrameLayout view = findViewById(R.id.table1);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("2")) {
-                    FrameLayout view = findViewById(R.id.table2);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("3")) {
-                    FrameLayout view = findViewById(R.id.table3);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("4")) {
-                    FrameLayout view = findViewById(R.id.table4);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("5")) {
-                    FrameLayout view = findViewById(R.id.table5);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("6")) {
-                    FrameLayout view = findViewById(R.id.table6);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("7")) {
-                    FrameLayout view = findViewById(R.id.table7);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("8")) {
-                    FrameLayout view = findViewById(R.id.table8);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("9")) {
-                    FrameLayout view = findViewById(R.id.table9);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("10")) {
-                    FrameLayout view = findViewById(R.id.table10);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("11")) {
-                    FrameLayout view = findViewById(R.id.table11);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("12")) {
-                    FrameLayout view = findViewById(R.id.table12);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("13")) {
-                    FrameLayout view = findViewById(R.id.table13);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("14")) {
-                    FrameLayout view = findViewById(R.id.table14);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("15")) {
-                    FrameLayout view = findViewById(R.id.table15);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("16")) {
-                    FrameLayout view = findViewById(R.id.table16);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("17")) {
-                    FrameLayout view = findViewById(R.id.table17);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("18")) {
-                    FrameLayout view = findViewById(R.id.table18);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("19")) {
-                    FrameLayout view = findViewById(R.id.table19);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("20")) {
-                    FrameLayout view = findViewById(R.id.table20);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("21")) {
-                    FrameLayout view = findViewById(R.id.table21);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("22")) {
-                    FrameLayout view = findViewById(R.id.table22);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("23")) {
-                    FrameLayout view = findViewById(R.id.table23);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("24")) {
-                    FrameLayout view = findViewById(R.id.table24);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("25")) {
-                    FrameLayout view = findViewById(R.id.table25);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("26")) {
-                    FrameLayout view = findViewById(R.id.table26);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("27")) {
-                    FrameLayout view = findViewById(R.id.table28);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("28")) {
-                    FrameLayout view = findViewById(R.id.table29);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("29")) {
-                    FrameLayout view = findViewById(R.id.table30);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
-                if (temp.get(1).equals("30")) {
-                    FrameLayout view = findViewById(R.id.table18);
-                    view.setBackgroundColor(getResources().getColor(R.color.colorReserved));
-                }
+            if (temp.get(1).equals("1")) {
+                LinearLayout linearLayout = findViewById(R.id.table1Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table1");
+            }
+            if (temp.get(1).equals("2")) {
+                LinearLayout linearLayout = findViewById(R.id.table2Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table2");
+            }
+            if (temp.get(1).equals("3")) {
+                LinearLayout linearLayout = findViewById(R.id.table3Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table3");
+            }
+            if (temp.get(1).equals("4")) {
+                LinearLayout linearLayout = findViewById(R.id.table4Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table4");
+            }
+            if (temp.get(1).equals("5")) {
+                LinearLayout linearLayout = findViewById(R.id.table5Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table5");
+            }
+            if (temp.get(1).equals("6")) {
+                LinearLayout linearLayout = findViewById(R.id.table6Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table6");
+            }
+            if (temp.get(1).equals("7")) {
+                LinearLayout linearLayout = findViewById(R.id.table7Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table7");
+            }
+            if (temp.get(1).equals("8")) {
+                LinearLayout linearLayout = findViewById(R.id.table8Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table8");
+            }
+            if (temp.get(1).equals("9")) {
+                LinearLayout linearLayout = findViewById(R.id.table9Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table9");
+            }
+            if (temp.get(1).equals("10")) {
+                LinearLayout linearLayout = findViewById(R.id.table10Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table10");
+            }
+            if (temp.get(1).equals("11")) {
+                LinearLayout linearLayout = findViewById(R.id.table11Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table11");
+            }
+            if (temp.get(1).equals("12")) {
+                LinearLayout linearLayout = findViewById(R.id.table12Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table12");
+            }
+            if (temp.get(1).equals("13")) {
+                LinearLayout linearLayout = findViewById(R.id.table13Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table13");
+            }
+            if (temp.get(1).equals("14")) {
+                LinearLayout linearLayout = findViewById(R.id.table14Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table14");
+            }
+            if (temp.get(1).equals("15")) {
+                LinearLayout linearLayout = findViewById(R.id.table15Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table15");
+            }
+            if (temp.get(1).equals("16")) {
+                LinearLayout linearLayout = findViewById(R.id.table16Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table16");
+            }
+            if (temp.get(1).equals("17")) {
+                LinearLayout linearLayout = findViewById(R.id.table17Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table17");
+            }
+            if (temp.get(1).equals("18")) {
+                LinearLayout linearLayout = findViewById(R.id.table18Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table18");
+            }
+            if (temp.get(1).equals("19")) {
+                LinearLayout linearLayout = findViewById(R.id.table19Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table19");
+            }
+            if (temp.get(1).equals("20")) {
+                LinearLayout linearLayout = findViewById(R.id.table20Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table20");
+            }
+            if (temp.get(1).equals("21")) {
+                LinearLayout linearLayout = findViewById(R.id.table21Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table21");
+            }
+            if (temp.get(1).equals("22")) {
+                LinearLayout linearLayout = findViewById(R.id.table22Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table22");
+            }
+            if (temp.get(1).equals("23")) {
+                LinearLayout linearLayout = findViewById(R.id.table23Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table23");
+            }
+            if (temp.get(1).equals("24")) {
+                LinearLayout linearLayout = findViewById(R.id.table24Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table24");
+            }
+            if (temp.get(1).equals("25")) {
+                LinearLayout linearLayout = findViewById(R.id.table25Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table25");
+            }
+            if (temp.get(1).equals("26")) {
+                LinearLayout linearLayout = findViewById(R.id.table26Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table26");
+            }
+            if (temp.get(1).equals("27")) {
+                LinearLayout linearLayout = findViewById(R.id.table27Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table27");
+            }
+            if (temp.get(1).equals("28")) {
+                LinearLayout linearLayout = findViewById(R.id.table28Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table28");
+            }
+            if (temp.get(1).equals("29")) {
+                LinearLayout linearLayout = findViewById(R.id.table29Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table29");
+            }
+            if (temp.get(1).equals("30")) {
+                LinearLayout linearLayout = findViewById(R.id.table30Linear);
+                addTimeViewAndReserve(linearLayout, temp.get(0));
+                Log.d(TAG, "checkAndApplyReservations: table30");
             }
         }
     }
 
-    private Cursor getMatchingItems(String[] columns, String date) {
-        String[] selectionArgs = {};
-        return database.query(
+    private void addTimeViewAndReserve(LinearLayout layout, String time) {
+        layout.getBackground().setColorFilter(getResources().getColor(R.color.colorReserved), PorterDuff.Mode.OVERLAY);
+
+        TextView timeView = new TextView(mContext);
+        timeView.setText(time);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        timeView.setLayoutParams(layoutParams);
+        timeView.setGravity(Gravity.CENTER | Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        layout.addView(timeView);
+    }
+
+    private Cursor getMatchingItemsReservation(String[] columns, String date) {
+        return reservationDatabase.query(
                 ReservationContract.ReservationEntry.TABLE_NAME,
                 columns,
                 ReservationContract.ReservationEntry.COLUMN_DATE + "=?",
-                selectionArgs = new String[]{date},
+                new String[]{date},
                 null,
                 null,
                 ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
         );
+    }
+
+    private boolean checkIfEntryExistsInDB(String tableSelected) {
+        Cursor cursor = getMatchingItemsTableStatus(tableSelected);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            return true;
+        }
     }
 
     private void saveCanvas() {
@@ -271,6 +536,102 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
         }
     }
 
+    private Cursor getMatchingItemsTableStatus(String table) {
+        return tableStatusdatabase.query(
+                TableStatusContract.TableStatusEntry.TABLE_NAME,
+                null,
+                TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "=?",
+                new String[]{table},
+                null,
+                null,
+                TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + " ASC"
+        );
+    }
+
+    private Cursor getAllItemsTableStatus() {
+        return tableStatusdatabase.query(
+                TableStatusContract.TableStatusEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + " ASC"
+        );
+    }
+
+    @Override
+    public void putinDB(String status) {
+        ContentValues values = new ContentValues();
+        values.put(TableStatusContract.TableStatusEntry.COLUMN_TABLENUM, childName);
+        values.put(TableStatusContract.TableStatusEntry.COLUMN_STATUS, status);
+
+        if (!checkIfEntryExistsInDB(childName)) {
+            tableStatusdatabase.insert(TableStatusContract.TableStatusEntry.TABLE_NAME, null, values);
+        } else {
+            tableStatusdatabase.update(TableStatusContract.TableStatusEntry.TABLE_NAME, values, TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "='" + childName + "'", null);
+        }
+
+        finish();
+        startActivity(getIntent());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.toReservationItem:
+                intent = new Intent(this, ViewReservationMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(intent);
+                break;
+            case R.id.addReservationItem:
+                intent = new Intent(this, AddReservationMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.restaurant_layout_menu, menu);
+        return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveCanvas();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        File res = mContext.getFileStreamPath("tables.jpeg");
+        if (res != null) {
+            getSavedCanvas(); //Doesn't work
+        }
+    }
+
+    public class MyClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            if (v instanceof LinearLayout) {
+                openTableStatusDialog();
+                TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
+                childName = child.getText().toString();
+            }
+        }
+    }
+
     public void getSavedCanvas() {
         View view = findViewById(R.id.restaurant_layout);
         File res = mContext.getFileStreamPath("tables.jpeg");
@@ -283,8 +644,8 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
         view.draw(canvas);
     }
 
-    public void getSavedTables(RearrangeableLayout parent) {
-        /*ArrayList<View> al = new ArrayList<>();
+    /*public void getSavedTables(RearrangeableLayout parent) {
+        ArrayList<View> al = new ArrayList<>();
         boolean cont = true;
         try {
             // create an ObjectInputStream for the file we need to read from
@@ -331,10 +692,10 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-        }*/
-    }
+        }
+    }*/
 
-    public void saveTable(Context context, View viewTable) {
+    /*public void saveTable(Context context, View viewTable) {
         try {
             // create a new file with an ObjectOutputStream
             FileOutputStream out = context.openFileOutput("tables", MODE_APPEND);
@@ -346,40 +707,5 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.toReservationItem:
-                intent = new Intent(this, ViewReservationMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(intent);
-                break;
-            case R.id.addReservationItem:
-                intent = new Intent(this, AddReservationMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(intent);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.restaurant_layout_menu, menu);
-        return true;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        saveCanvas();
-    }
+    }*/
 }

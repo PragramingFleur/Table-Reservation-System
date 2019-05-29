@@ -52,4 +52,11 @@
     <string name="add_reservation_title">Ny Reservation</string>
     <string name="date_title">Dato</string>
     <string name="select_time">Vælg tid</string>
+    <string name="ok_title">OK</string>
+    <string name="table_status_title">Bord Status</string>
+    <string-array name="table_status">
+        <item>Ledig</item>
+        <item>Optaget</item>
+        <item>Skal Ryddes</item>
+    </string-array>
 </resources>

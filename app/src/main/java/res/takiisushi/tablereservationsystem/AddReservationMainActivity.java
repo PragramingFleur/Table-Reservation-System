@@ -222,6 +222,9 @@ public class AddReservationMainActivity extends AppCompatActivity
 
         if (editChildGuestNum.getText().toString().isEmpty()) {
             editChildGuestNum.setText("0");
+            isCorrectCollection.add(true);
+        } else if (!editChildGuestNum.getText().toString().isEmpty() && Integer.parseInt(editChildGuestNum.getText().toString()) >= 0) {
+            isCorrectCollection.add(true);
         } else {
             isCorrectCollection.add(false);
             editChildGuestNum.setError("Required");
@@ -286,7 +289,7 @@ public class AddReservationMainActivity extends AppCompatActivity
 
     private void createDeleteTableSpinner(final LinearLayout layout) {
         final AdapterView.OnItemSelectedListener listener = this;
-        //Button and logic to add new spinner when add new table button is pressed
+        //Button and logic to add new spinner when add new table1 button is pressed
         FloatingActionButton addTableButton = findViewById(R.id.addTableButton);
 
         addTableButton.setOnClickListener(new View.OnClickListener() {
@@ -303,7 +306,7 @@ public class AddReservationMainActivity extends AppCompatActivity
             }
         });
 
-        //Button and logic to remove last spinner when remove table button is pressed
+        //Button and logic to remove last spinner when remove table1 button is pressed
         FloatingActionButton removeTableButton = findViewById(R.id.removeTableButton);
 
         removeTableButton.setOnClickListener(new View.OnClickListener() {
