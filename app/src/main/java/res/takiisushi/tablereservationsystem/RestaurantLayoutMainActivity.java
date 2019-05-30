@@ -36,7 +36,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     private static final String TAG = "REST-REARRANGEABLE-LOUT";
     private Context mContext;
     String dateToday = "";
-    private SQLiteDatabase tableStatusdatabase;
+    private SQLiteDatabase tableStatusDatabase;
     private SQLiteDatabase reservationDatabase;
     private String childName;
 
@@ -48,11 +48,17 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
 
         //Initializing DB
         TableStatusDBHelper dbHelper = TableStatusDBHelper.getInstance(this);
-        tableStatusdatabase = dbHelper.getWritableDatabase();
+        tableStatusDatabase = dbHelper.getWritableDatabase();
 
         //Initializing DB
         ReservationDBHelper dbHelper1 = ReservationDBHelper.getInstance(this);
         reservationDatabase = dbHelper1.getWritableDatabase();
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        if (day == 1) {
+            reservationDatabase.execSQL("delete from " + ReservationContract.ReservationEntry.TABLE_NAME);
+        }
 
         getSupportActionBar().setTitle(getString(R.string.table_layout_title));
 
@@ -541,7 +547,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     }
 
     private Cursor getMatchingItemsTableStatus(String table) {
-        return tableStatusdatabase.query(
+        return tableStatusDatabase.query(
                 TableStatusContract.TableStatusEntry.TABLE_NAME,
                 null,
                 TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "=?",
@@ -553,7 +559,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     }
 
     private Cursor getAllItemsTableStatus() {
-        return tableStatusdatabase.query(
+        return tableStatusDatabase.query(
                 TableStatusContract.TableStatusEntry.TABLE_NAME,
                 null,
                 null,
@@ -571,9 +577,9 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         values.put(TableStatusContract.TableStatusEntry.COLUMN_STATUS, status);
 
         if (!checkIfEntryExistsInDB(childName)) {
-            tableStatusdatabase.insert(TableStatusContract.TableStatusEntry.TABLE_NAME, null, values);
+            tableStatusDatabase.insert(TableStatusContract.TableStatusEntry.TABLE_NAME, null, values);
         } else {
-            tableStatusdatabase.update(TableStatusContract.TableStatusEntry.TABLE_NAME, values, TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "='" + childName + "'", null);
+            tableStatusDatabase.update(TableStatusContract.TableStatusEntry.TABLE_NAME, values, TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "='" + childName + "'", null);
         }
 
         checkAndApplyTableStatutes();

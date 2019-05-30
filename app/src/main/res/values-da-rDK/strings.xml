@@ -59,4 +59,8 @@
         <item>Optaget</item>
         <item>Skal Ryddes</item>
     </string-array>
+    <string name="arrived_text">Ankomst</string>
+    <string name="reservation_details_title">Reservation Detaljer</string>
+    <string name="edit_text">Rediger</string>
+    <string name="id_text">ID</string>
 </resources>

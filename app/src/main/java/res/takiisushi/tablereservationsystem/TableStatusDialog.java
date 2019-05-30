@@ -37,8 +37,8 @@ public class TableStatusDialog extends AppCompatDialogFragment {
                 }).setPositiveButton(getString(R.string.ok_title), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String statusSlected = statusSpinner.getSelectedItem().toString();
-                listener.putinDB(statusSlected);
+                String statusSelected = statusSpinner.getSelectedItem().toString();
+                listener.putinDB(statusSelected);
             }
         });
         return builder.create();

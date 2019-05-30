@@ -35,14 +35,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import res.takiisushi.tablereservationsystem.ReservationContract.ReservationEntry;
-
-public class AddReservationMainActivity extends AppCompatActivity
+public class EditReservationMainActivity extends AppCompatActivity
         implements TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
         AdapterView.OnItemSelectedListener {
 
-    private static final String TAG = "ADD-RESERVATION";
+    private static final String TAG = "EDIT-RESERVATION";
     Context mContext;
 
     String tableSelected = "";
@@ -58,13 +56,16 @@ public class AddReservationMainActivity extends AppCompatActivity
     private SQLiteDatabase database;
     private ReservationAdapter adapter;
 
+    private LinearLayout linearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation_main);
         mContext = this;
+
         //initialize the layout for adding the spinner to
-        final LinearLayout root = findViewById(R.id.spinnerLayout);
+        linearLayout = findViewById(R.id.spinnerLayout);
 
         //Initializing all fields from the form
         editName = findViewById(R.id.editName);
@@ -79,6 +80,12 @@ public class AddReservationMainActivity extends AppCompatActivity
         database = dbHelper.getWritableDatabase();
         adapter = ReservationAdapter.getAdapter(mContext, getAllItems());
 
+        //get item id from details dialog
+        final long id = getIntent().getLongExtra("id", -1);
+
+        //set all necessary fields
+        setFormFields(id);
+
         //Sets up action bar menus and title
         setupActionBar();
 
@@ -86,7 +93,7 @@ public class AddReservationMainActivity extends AppCompatActivity
         setupDialogs();
 
         //Method for deleting the last spinner and adding a spinner for choosing tables
-        createDeleteTableSpinner(root);
+        createDeleteTableSpinner(linearLayout);
 
         //Button and click listener for when add Reservation is clicked
         Button addReservationButton = findViewById(R.id.reserveButton);
@@ -98,7 +105,7 @@ public class AddReservationMainActivity extends AppCompatActivity
                 boolean isCorrect = checkFields(editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
                 if (isCorrect) {
                     //adds reservation to the db
-                    addReservationToDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
+                    editReservationToDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum, id);
                 }
             }
         });
@@ -117,6 +124,37 @@ public class AddReservationMainActivity extends AppCompatActivity
         });
     }
 
+    private void setFormFields(long id) {
+        Cursor cursor = getItemAtID(id);
+        if (cursor.moveToFirst() && cursor.getCount() >= 1) {
+            do {
+                if (!cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NAME)).equals("")) {
+                    editName.setText(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NAME)));
+                }
+                editNumber.setText(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NUMBER)));
+                editDate.setText(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_DATE)));
+                editTime.setText(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TIME)));
+                List<String> guests = Arrays.asList(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS)).split("\\s+"));
+                editAdultGuestNum.setText(guests.get(1));
+                editChildGuestNum.setText(guests.get(3));
+                List<String> tables = Arrays.asList(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES)).split(","));
+                createTableSpinnerFromDB(tables);
+            } while (cursor.moveToNext());
+        }
+    }
+
+    private Cursor getItemAtID(long id) {
+        return database.query(
+                ReservationContract.ReservationEntry.TABLE_NAME,
+                null,
+                ReservationContract.ReservationEntry._ID + "=" + id,
+                null,
+                null,
+                null,
+                ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
+        );
+    }
+
     private Cursor getAllItems() {
         return database.query(
                 ReservationContract.ReservationEntry.TABLE_NAME,
@@ -129,22 +167,23 @@ public class AddReservationMainActivity extends AppCompatActivity
         );
     }
 
-    private void addReservationToDB(EditText editName, EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
+    private void editReservationToDB(EditText editName, EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum, long id) {
         String guests = "V: " + editAdultGuestNum.getText().toString() + " B: " + editChildGuestNum.getText().toString();
         ContentValues values = new ContentValues();
-        values.put(ReservationEntry.COLUMN_NAME, editName.getText().toString().trim());
-        values.put(ReservationEntry.COLUMN_NUMBER, editNumber.getText().toString().trim());
-        values.put(ReservationEntry.COLUMN_TIME, editTime.getText().toString());
-        values.put(ReservationEntry.COLUMN_DATE, editDate.getText().toString());
-        values.put(ReservationEntry.COLUMN_GUESTS, guests);
-        values.put(ReservationEntry.COLUMN_TABLES, tableSelected);
+        values.put(ReservationContract.ReservationEntry.COLUMN_NAME, editName.getText().toString().trim());
+        values.put(ReservationContract.ReservationEntry.COLUMN_NUMBER, editNumber.getText().toString().trim());
+        values.put(ReservationContract.ReservationEntry.COLUMN_TIME, editTime.getText().toString());
+        values.put(ReservationContract.ReservationEntry.COLUMN_DATE, editDate.getText().toString());
+        values.put(ReservationContract.ReservationEntry.COLUMN_GUESTS, guests);
+        values.put(ReservationContract.ReservationEntry.COLUMN_TABLES, tableSelected);
 
-        database.insert(ReservationEntry.TABLE_NAME, null, values);
+        database.update(ReservationContract.ReservationEntry.TABLE_NAME, values,
+                ReservationContract.ReservationEntry._ID + "=" + id, null);
         adapter.swapCursor(getAllItems());
 
         Intent intent = new Intent(this, ViewReservationMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(intent);
+        mContext.startActivity(intent);
     }
 
     private boolean checkFields(EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
@@ -275,7 +314,7 @@ public class AddReservationMainActivity extends AppCompatActivity
     }
 
     private void setupActionBar() {
-        getSupportActionBar().setTitle(getString(R.string.add_reservation_title));
+        getSupportActionBar().setTitle(getString(R.string.reservation_details_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -312,8 +351,8 @@ public class AddReservationMainActivity extends AppCompatActivity
         addTableButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Spinner newSpinner = new Spinner(AddReservationMainActivity.this);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(AddReservationMainActivity.this, R.array.table_Numbers, android.R.layout.simple_spinner_item);
+                Spinner newSpinner = new Spinner(mContext);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.table_Numbers, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 newSpinner.setAdapter(adapter);
                 newSpinner.setId(spinnerId);
@@ -332,6 +371,23 @@ public class AddReservationMainActivity extends AppCompatActivity
                 layout.removeViewAt(layout.getChildCount() - 1);
             }
         });
+    }
+
+    private void createTableSpinnerFromDB(List<String> tables) {
+        final AdapterView.OnItemSelectedListener listener = this;
+
+        for (String table : tables) {
+            Spinner newSpinner = new Spinner(mContext);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.table_Numbers, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            newSpinner.setAdapter(adapter);
+            newSpinner.setId(spinnerId);
+            newSpinner.setSelection(adapter.getPosition(table));
+            spinnerId = spinnerId + 1;
+            newSpinner.setOnItemSelectedListener(listener);
+            linearLayout.addView(newSpinner);
+        }
+
     }
 
     @Override

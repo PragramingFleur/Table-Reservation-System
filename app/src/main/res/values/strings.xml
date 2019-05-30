@@ -87,6 +87,10 @@
     <string name="dk_phone" translatable="false">0123456789</string>
     <string name="table_status_title">Table Status</string>
     <string name="ok_title">OK</string>
+    <string name="arrived_text">Arrived</string>
+    <string name="reservation_details_title">Reservation Details</string>
+    <string name="edit_text">Edit</string>
+    <string name="id_text">ID</string>
     <string-array name="table_status">
         <item>Available</item>
         <item>Taken</item>

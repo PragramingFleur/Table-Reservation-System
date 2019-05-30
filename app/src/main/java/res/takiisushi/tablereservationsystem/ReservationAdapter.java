@@ -13,6 +13,15 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     private static ReservationAdapter adapter;
     private Context mContext;
     private Cursor mCursor;
+    private OnItemClickListener mListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position, View view);
+    }
 
     private ReservationAdapter(Context context, Cursor cursor) {
         mContext = context;
@@ -80,13 +89,26 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         public TextView tableText;
         public TextView numberText;
 
-        public ReservationViewHolder(@NonNull View itemView) {
+        public ReservationViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             timeText = itemView.findViewById(R.id.reservationTime);
             guestsText = itemView.findViewById(R.id.reservationGuests);
             tableText = itemView.findViewById(R.id.reservationTable);
             numberText = itemView.findViewById(R.id.reservationMobileNum);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position, itemView);
+                        }
+                    }
+                }
+            });
         }
     }
 }

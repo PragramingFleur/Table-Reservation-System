@@ -1,6 +1,7 @@
 package res.takiisushi.tablereservationsystem;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,17 +24,24 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class ViewReservationMainActivity extends AppCompatActivity
-        implements DatePickerDialog.OnDateSetListener {
+        implements DatePickerDialog.OnDateSetListener,
+        ReservationDetailsDialog.ReservationDetailsDialogListener {
     private static final String TAG = "VIEW-RESERVATION";
     Context mContext;
+    Cursor mCursor;
+    int itemPosition;
     TextView dateTextView;
     RecyclerView recyclerView;
     private SQLiteDatabase database;
+    private SQLiteDatabase tableStatusDB;
     private ReservationAdapter adapter;
     String dateToday = "";
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,11 @@ public class ViewReservationMainActivity extends AppCompatActivity
         dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime());
         dateTextView.setText(dateToday);
 
+        //getting table status db
+        TableStatusDBHelper dbHelperTable = TableStatusDBHelper.getInstance(mContext);
+        tableStatusDB = dbHelperTable.getWritableDatabase();
+
+
         RecyclerView recyclerView = setUpDBRecyclerView();
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -58,6 +72,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 removeItem((Long) viewHolder.itemView.getTag());
             }
+
         }).attachToRecyclerView(recyclerView);
 
         setupActionBar();
@@ -66,6 +81,26 @@ public class ViewReservationMainActivity extends AppCompatActivity
 
         setUpSearchView();
 
+    }
+
+    private void openReservationDetailsDialog(int position, View view) {
+        bundle = new Bundle();
+        mCursor = getMatchingItems(ReservationContract.ReservationEntry._ID, dateToday, String.valueOf(view.getTag()));
+        mCursor.moveToPosition(position);
+        bundle.putLong("ID", mCursor.getLong(mCursor.getColumnIndex(ReservationContract.ReservationEntry._ID)));
+        bundle.putString("NAME", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NAME)));
+        bundle.putString("NUMBER", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NUMBER)));
+        bundle.putString("DATE", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_DATE)));
+        bundle.putString("TIME", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TIME)));
+        List<String> guests = Arrays.asList(mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS)).split("\\s+"));
+        bundle.putString("ADULTS", guests.get(1));
+        bundle.putString("CHILDREN", guests.get(3));
+        bundle.putString("TABLES", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES)));
+
+        Log.d(TAG, "openReservationDetailsDialog: opened");
+        ReservationDetailsDialog dialog = new ReservationDetailsDialog();
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "reservation details dialog");
     }
 
     public void setUpSearchView() {
@@ -96,7 +131,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
         //getting recycler view
         recyclerView = findViewById(R.id.reservationRecyclerView);
 
-        //getting database
+        //getting reservations database
         ReservationDBHelper dbHelper = ReservationDBHelper.getInstance(mContext);
         database = dbHelper.getWritableDatabase();
 
@@ -104,9 +139,17 @@ public class ViewReservationMainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
         //getting the adaptor instance and then putting adaptor to the the recycler view
-        adapter = ReservationAdapter.getAdapter(mContext, getMatchingDateItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
-        adapter.swapCursor(getMatchingDateItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
+        adapter = ReservationAdapter.getAdapter(mContext, getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
+        adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new ReservationAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, View view) {
+                openReservationDetailsDialog(position, view);
+                itemPosition = position;
+            }
+        });
 
         return recyclerView;
     }
@@ -132,13 +175,12 @@ public class ViewReservationMainActivity extends AppCompatActivity
         });
     }
 
-    private Cursor getMatchingDateItems(String column, String text) {
-        String[] selectionArgs = {};
+    private Cursor getMatchingItems(String column, String text) {
         return database.query(
                 ReservationContract.ReservationEntry.TABLE_NAME,
                 null,
                 column + "=?",
-                selectionArgs = new String[]{text},
+                new String[]{text},
                 null,
                 null,
                 ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
@@ -146,16 +188,28 @@ public class ViewReservationMainActivity extends AppCompatActivity
     }
 
     private Cursor getMatchingItems(String column, String date, String text) {
-        String[] selectionArgs = {};
-        return database.query(
-                ReservationContract.ReservationEntry.TABLE_NAME,
-                null,
-                ReservationContract.ReservationEntry.COLUMN_DATE + "=? AND " + column + " LIKE ?",
-                selectionArgs = new String[]{date, "%" + text + "%"},
-                null,
-                null,
-                ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
-        );
+        if (column.equals(ReservationContract.ReservationEntry._ID)) {
+            long id = Long.parseLong(text);
+            return database.query(
+                    ReservationContract.ReservationEntry.TABLE_NAME,
+                    null,
+                    ReservationContract.ReservationEntry.COLUMN_DATE + "=? AND " + column + "=" + id,
+                    new String[]{date},
+                    null,
+                    null,
+                    ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
+            );
+        } else {
+            return database.query(
+                    ReservationContract.ReservationEntry.TABLE_NAME,
+                    null,
+                    ReservationContract.ReservationEntry.COLUMN_DATE + "=? AND " + column + " LIKE ?",
+                    new String[]{date, "%" + text + "%"},
+                    null,
+                    null,
+                    ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
+            );
+        }
     }
 
     private void setupActionBar() {
@@ -167,7 +221,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
     private void removeItem(long id) {
         database.delete(ReservationContract.ReservationEntry.TABLE_NAME,
                 ReservationContract.ReservationEntry._ID + "=" + id, null);
-        adapter.swapCursor(getMatchingDateItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateTextView.getText().toString()));
+        adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateTextView.getText().toString()));
     }
 
     @Override
@@ -182,7 +236,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
 
         dateTextView.setText(currentDateString);
 
-        adapter.swapCursor(getMatchingDateItems(ReservationContract.ReservationEntry.COLUMN_DATE, currentDateString));
+        adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, currentDateString));
         dateToday = currentDateString;
         recyclerView.setAdapter(adapter);
     }
@@ -215,5 +269,64 @@ public class ViewReservationMainActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.reservation_layout_menu, menu);
         return true;
+    }
+
+    @Override
+    public void updateTableStatus(String status, String tableNum, long id) {
+        String[] tables = tableNum.split(",");
+        ContentValues values = new ContentValues();
+        for (String table : tables) {
+            values.put(TableStatusContract.TableStatusEntry.COLUMN_TABLENUM, "Table " + table);
+            values.put(TableStatusContract.TableStatusEntry.COLUMN_STATUS, status);
+
+            if (!checkIfEntryExistsInDB("Table " + table)) {
+                tableStatusDB.insert(TableStatusContract.TableStatusEntry.TABLE_NAME, null, values);
+            } else {
+                tableStatusDB.update(TableStatusContract.TableStatusEntry.TABLE_NAME, values,
+                        TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "='Table " + table + "'",
+                        null);
+            }
+
+            database.delete(ReservationContract.ReservationEntry.TABLE_NAME,
+                    ReservationContract.ReservationEntry._ID + "=" + id,
+                    null);
+        }
+
+        Intent intent = new Intent(mContext, RestaurantLayoutMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+        this.finish();
+    }
+
+    private boolean checkIfEntryExistsInDB(String tableSelected) {
+        Cursor cursor = getMatchingItemsTableStatus(tableSelected);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            return true;
+        }
+    }
+
+    private Cursor getMatchingItemsTableStatus(String table) {
+        return tableStatusDB.query(
+                TableStatusContract.TableStatusEntry.TABLE_NAME,
+                null,
+                TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + "=?",
+                new String[]{table},
+                null,
+                null,
+                TableStatusContract.TableStatusEntry.COLUMN_TABLENUM + " ASC"
+        );
+    }
+
+    @Override
+    public void changeReservationDetails(long id) {
+        Intent intent = new Intent(mContext, EditReservationMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("id", bundle.getLong("ID"));
+        this.startActivity(intent);
+        this.finish();
     }
 }
