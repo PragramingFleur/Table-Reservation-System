@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -17,6 +16,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +39,8 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     private SQLiteDatabase tableStatusDatabase;
     private SQLiteDatabase reservationDatabase;
     private String childName;
+    private long lastTouchDown;
+    private long currentDown;
 
 
     @Override
@@ -78,15 +80,15 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
             }
         });
 
-        File res = mContext.getFileStreamPath("tables.jpeg");
+        /*File res = mContext.getFileStreamPath("tables.jpeg");
         if (res != null) {
             getSavedCanvas(); //Doesn't work
-        }
+        }*/
 
         for (int counter = 0; counter < root.getChildCount(); counter++) {
             LinearLayout layout = (LinearLayout) root.getChildAt(counter);
-            MyClickListener listener = new MyClickListener();
-            layout.setOnClickListener(listener);
+            MyTouchListener listener = new MyTouchListener();
+            layout.setOnTouchListener(listener);
         }
         //getSavedTables(root);//doesn't work
     }
@@ -625,23 +627,35 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         super.onResume();
         File res = mContext.getFileStreamPath("tables.jpeg");
         if (res != null) {
-            getSavedCanvas(); //Doesn't work
+            //getSavedCanvas(); //Doesn't work
         }
     }
 
-    public class MyClickListener implements View.OnClickListener {
+    public class MyTouchListener implements View.OnTouchListener {
 
         @Override
-        public void onClick(View v) {
-            if (v instanceof LinearLayout) {
-                openTableStatusDialog();
-                TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
-                childName = child.getText().toString();
+        public boolean onTouch(View v, MotionEvent event) {
+            int CLICK_ACTION_THRESHHOLD = 200;
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastTouchDown = currentDown;
+                    currentDown = System.currentTimeMillis();
+                    if (currentDown - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
+                        if (v instanceof LinearLayout) {
+                            openTableStatusDialog();
+                            TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
+                            childName = child.getText().toString();
+                        }
+
+                    }
+                    Log.d(TAG, "onTouch: Pressed! " + lastTouchDown);
+                    break;
             }
+            return true;
         }
     }
 
-    public void getSavedCanvas() {
+    /*public void getSavedCanvas() {
         View view = findViewById(R.id.restaurant_layout);
         File res = mContext.getFileStreamPath("tables.jpeg");
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -651,7 +665,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(mutableBitmap);
         view.draw(canvas);
-    }
+    }*/
 
     /*public void getSavedTables(RearrangeableLayout parent) {
         ArrayList<View> al = new ArrayList<>();
