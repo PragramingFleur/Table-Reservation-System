@@ -1,5 +1,6 @@
 package res.takiisushi.tablereservationsystem;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -39,7 +40,6 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     private SQLiteDatabase tableStatusDatabase;
     private SQLiteDatabase reservationDatabase;
     private String childName;
-    private long lastTouchDown;
     private long currentDown;
 
 
@@ -628,28 +628,28 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         File res = mContext.getFileStreamPath("tables.jpeg");
         if (res != null) {
             //getSavedCanvas(); //Doesn't work
+            Log.d(TAG, "onResume: get saved canvas");
         }
     }
 
     public class MyTouchListener implements View.OnTouchListener {
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             int CLICK_ACTION_THRESHHOLD = 200;
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    lastTouchDown = currentDown;
-                    currentDown = System.currentTimeMillis();
-                    if (currentDown - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
-                        if (v instanceof LinearLayout) {
-                            openTableStatusDialog();
-                            TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
-                            childName = child.getText().toString();
-                        }
-
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                long lastTouchDown = currentDown;
+                currentDown = System.currentTimeMillis();
+                if (currentDown - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
+                    if (v instanceof LinearLayout) {
+                        openTableStatusDialog();
+                        TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
+                        childName = child.getText().toString();
                     }
-                    Log.d(TAG, "onTouch: Pressed! " + lastTouchDown);
-                    break;
+
+                }
+                Log.d(TAG, "onTouch: Pressed! " + lastTouchDown);
             }
             return true;
         }
