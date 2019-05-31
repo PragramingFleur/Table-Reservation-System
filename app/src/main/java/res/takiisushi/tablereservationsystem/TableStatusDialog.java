@@ -38,7 +38,7 @@ public class TableStatusDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String statusSelected = statusSpinner.getSelectedItem().toString();
-                listener.putinDB(statusSelected);
+                listener.putStatusInDB(statusSelected);
             }
         });
         return builder.create();
@@ -57,7 +57,7 @@ public class TableStatusDialog extends AppCompatDialogFragment {
     }
 
     public interface TableStatusDialogListener {
-        void putinDB(String status);
+        void putStatusInDB(String status);
     }
 
 }

@@ -124,152 +124,152 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         }
 
         for (int counter = 0; counter < tablesList.size(); counter++) {
-            if (tablesList.get(counter).equals("Table 1")) {
+            if (tablesList.get(counter).equals(getString(R.string.table1))) {
                 LinearLayout linearLayout = findViewById(R.id.table1Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table1");
             }
-            if (tablesList.get(counter).equals("Table 2")) {
+            if (tablesList.get(counter).equals(getString(R.string.table2))) {
                 LinearLayout linearLayout = findViewById(R.id.table2Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table2");
             }
-            if (tablesList.get(counter).equals("Table 3")) {
+            if (tablesList.get(counter).equals(getString(R.string.table3))) {
                 LinearLayout linearLayout = findViewById(R.id.table3Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table3");
             }
-            if (tablesList.get(counter).equals("Table 4")) {
+            if (tablesList.get(counter).equals(getString(R.string.table4))) {
                 LinearLayout linearLayout = findViewById(R.id.table4Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table4");
             }
-            if (tablesList.get(counter).equals("Table 5")) {
+            if (tablesList.get(counter).equals(getString(R.string.table5))) {
                 LinearLayout linearLayout = findViewById(R.id.table5Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table5");
             }
-            if (tablesList.get(counter).equals("Table 6")) {
+            if (tablesList.get(counter).equals(getString(R.string.table6))) {
                 LinearLayout linearLayout = findViewById(R.id.table6Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table6");
             }
-            if (tablesList.get(counter).equals("Table 7")) {
+            if (tablesList.get(counter).equals(getString(R.string.table7))) {
                 LinearLayout linearLayout = findViewById(R.id.table7Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table7");
             }
-            if (tablesList.get(counter).equals("Table 8")) {
+            if (tablesList.get(counter).equals(getString(R.string.table8))) {
                 LinearLayout linearLayout = findViewById(R.id.table8Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table8");
             }
-            if (tablesList.get(counter).equals("Table 9")) {
+            if (tablesList.get(counter).equals(getString(R.string.table9))) {
                 LinearLayout linearLayout = findViewById(R.id.table9Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table9");
             }
-            if (tablesList.get(counter).equals("Table 10")) {
+            if (tablesList.get(counter).equals(getString(R.string.table10))) {
                 LinearLayout linearLayout = findViewById(R.id.table10Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table10");
             }
-            if (tablesList.get(counter).equals("Table 11")) {
+            if (tablesList.get(counter).equals(getString(R.string.table11))) {
                 LinearLayout linearLayout = findViewById(R.id.table11Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table11");
             }
-            if (tablesList.get(counter).equals("Table 12")) {
+            if (tablesList.get(counter).equals(getString(R.string.table12))) {
                 LinearLayout linearLayout = findViewById(R.id.table12Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table12");
             }
-            if (tablesList.get(counter).equals("Table 13")) {
+            if (tablesList.get(counter).equals(getString(R.string.table13))) {
                 LinearLayout linearLayout = findViewById(R.id.table13Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table13");
             }
-            if (tablesList.get(counter).equals("Table 14")) {
+            if (tablesList.get(counter).equals(getString(R.string.table14))) {
                 LinearLayout linearLayout = findViewById(R.id.table14Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table14");
             }
-            if (tablesList.get(counter).equals("Table 15")) {
+            if (tablesList.get(counter).equals(getString(R.string.table15))) {
                 LinearLayout linearLayout = findViewById(R.id.table15Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table15");
             }
-            if (tablesList.get(counter).equals("Table 16")) {
+            if (tablesList.get(counter).equals(getString(R.string.table16))) {
                 LinearLayout linearLayout = findViewById(R.id.table16Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table16");
             }
-            if (tablesList.get(counter).equals("Table 17")) {
+            if (tablesList.get(counter).equals(getString(R.string.table17))) {
                 LinearLayout linearLayout = findViewById(R.id.table17Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table17");
             }
-            if (tablesList.get(counter).equals("Table 18")) {
+            if (tablesList.get(counter).equals(getString(R.string.table18))) {
                 LinearLayout linearLayout = findViewById(R.id.table18Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table18");
             }
-            if (tablesList.get(counter).equals("Table 19")) {
+            if (tablesList.get(counter).equals(getString(R.string.table19))) {
                 LinearLayout linearLayout = findViewById(R.id.table19Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table19");
             }
-            if (tablesList.get(counter).equals("Table 20")) {
+            if (tablesList.get(counter).equals(getString(R.string.table20))) {
                 LinearLayout linearLayout = findViewById(R.id.table20Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table20");
             }
-            if (tablesList.get(counter).equals("Table 21")) {
+            if (tablesList.get(counter).equals(getString(R.string.table21))) {
                 LinearLayout linearLayout = findViewById(R.id.table21Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table21");
             }
-            if (tablesList.get(counter).equals("Table 22")) {
+            if (tablesList.get(counter).equals(getString(R.string.table22))) {
                 LinearLayout linearLayout = findViewById(R.id.table22Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table22");
             }
-            if (tablesList.get(counter).equals("Table 23")) {
+            if (tablesList.get(counter).equals(getString(R.string.table23))) {
                 LinearLayout linearLayout = findViewById(R.id.table23Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table23");
             }
-            if (tablesList.get(counter).equals("Table 24")) {
+            if (tablesList.get(counter).equals(getString(R.string.table24))) {
                 LinearLayout linearLayout = findViewById(R.id.table24Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table24");
             }
-            if (tablesList.get(counter).equals("Table 25")) {
+            if (tablesList.get(counter).equals(getString(R.string.table25))) {
                 LinearLayout linearLayout = findViewById(R.id.table25Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table25");
             }
-            if (tablesList.get(counter).equals("Table 26")) {
+            if (tablesList.get(counter).equals(getString(R.string.table26))) {
                 LinearLayout linearLayout = findViewById(R.id.table26Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table26");
             }
-            if (tablesList.get(counter).equals("Table 27")) {
+            if (tablesList.get(counter).equals(getString(R.string.table27))) {
                 LinearLayout linearLayout = findViewById(R.id.table27Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table27");
             }
-            if (tablesList.get(counter).equals("Table 28")) {
+            if (tablesList.get(counter).equals(getString(R.string.table28))) {
                 LinearLayout linearLayout = findViewById(R.id.table28Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table28");
             }
-            if (tablesList.get(counter).equals("Table 29")) {
+            if (tablesList.get(counter).equals(getString(R.string.table29))) {
                 LinearLayout linearLayout = findViewById(R.id.table29Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table29");
             }
-            if (tablesList.get(counter).equals("Table 30")) {
+            if (tablesList.get(counter).equals(getString(R.string.table30))) {
                 LinearLayout linearLayout = findViewById(R.id.table30Linear);
                 addTableStatus(linearLayout, statusList.get(counter));
                 Log.d(TAG, "checkAndApplyTableStatutes: table30");
@@ -504,8 +504,8 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         TextView timeView = new TextView(mContext);
         timeView.setText(time);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
         layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         timeView.setLayoutParams(layoutParams);
         timeView.setGravity(Gravity.CENTER | Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
@@ -573,7 +573,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     }
 
     @Override
-    public void putinDB(String status) {
+    public void putStatusInDB(String status) {
         ContentValues values = new ContentValues();
         values.put(TableStatusContract.TableStatusEntry.COLUMN_TABLENUM, childName);
         values.put(TableStatusContract.TableStatusEntry.COLUMN_STATUS, status);
@@ -646,6 +646,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
                         openTableStatusDialog();
                         TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
                         childName = child.getText().toString();
+                        Log.d(TAG, "onTouch: Child view text: " + childName);
                     }
 
                 }
