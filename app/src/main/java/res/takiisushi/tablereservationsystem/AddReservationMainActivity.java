@@ -1,5 +1,6 @@
 package res.takiisushi.tablereservationsystem;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import res.takiisushi.tablereservationsystem.ReservationContract.ReservationEntry;
@@ -58,6 +60,7 @@ public class AddReservationMainActivity extends AppCompatActivity
     private SQLiteDatabase database;
     private ReservationAdapter adapter;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,11 @@ public class AddReservationMainActivity extends AppCompatActivity
         editTime = findViewById(R.id.selectTimeNewReservation);
         editAdultGuestNum = findViewById(R.id.editAdultGuestNum);
         editChildGuestNum = findViewById(R.id.editChildrenGuestNum);
+
+        //Adding value to the date and time fields. Adding date today and also time to 17:00
+        Calendar cal = Calendar.getInstance();
+        editDate.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.getTime()));
+        editTime.setText("17:00");
 
         //Initializing DB and adaptor
         ReservationDBHelper dbHelper = ReservationDBHelper.getInstance(mContext);
@@ -149,7 +157,7 @@ public class AddReservationMainActivity extends AppCompatActivity
 
     private boolean checkFields(EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
         List<Boolean> isCorrectCollection = new ArrayList<>();
-        boolean isCorrect = false;
+        boolean isCorrect;
 
         Calendar c = Calendar.getInstance();
         Date today = c.getTime();
@@ -157,7 +165,7 @@ public class AddReservationMainActivity extends AppCompatActivity
         TextView tableWarning = findViewById(R.id.tableTextView);
 
         //Check if required fields are filled out
-        if (editNumber.getText().toString().trim().length() < 8 || editNumber.getText().toString().trim().length() > 8) {
+        if (editNumber.getText().toString().trim().length() < 8) {
             //Number field is empty or less than 8digits which is wrong
             isCorrectCollection.add(false);
             editNumber.setError("Invalid Number");
@@ -170,7 +178,7 @@ public class AddReservationMainActivity extends AppCompatActivity
             //If date textview is not empty then check if the date is before today
             String datePicked = editDate.getText().toString();
             try {
-                Date strDate = new SimpleDateFormat("yyyy/MM/dd").parse(datePicked);
+                @SuppressLint("SimpleDateFormat") Date strDate = new SimpleDateFormat("yyyy/MM/dd").parse(datePicked);
 
                 if (today.after(strDate)) {
                     //date isn't supposed to be before today
@@ -194,9 +202,9 @@ public class AddReservationMainActivity extends AppCompatActivity
                 String minTime = "13:00";
                 String maxTime = "22:00";
 
-                Date selectedTimeConverted = new SimpleDateFormat("HH:mm").parse(selectedTime);
-                Date minTimeConverted = new SimpleDateFormat("HH:mm").parse(minTime);
-                Date maxTimeConverted = new SimpleDateFormat("HH:mm").parse(maxTime);
+                @SuppressLint("SimpleDateFormat") Date selectedTimeConverted = new SimpleDateFormat("HH:mm").parse(selectedTime);
+                @SuppressLint("SimpleDateFormat") Date minTimeConverted = new SimpleDateFormat("HH:mm").parse(minTime);
+                @SuppressLint("SimpleDateFormat") Date maxTimeConverted = new SimpleDateFormat("HH:mm").parse(maxTime);
 
                 Calendar calendar = Calendar.getInstance();
                 Calendar calendarA = Calendar.getInstance();
@@ -274,8 +282,9 @@ public class AddReservationMainActivity extends AppCompatActivity
         return isCorrect;
     }
 
+    @SuppressLint("NewApi")
     private void setupActionBar() {
-        getSupportActionBar().setTitle(getString(R.string.add_reservation_title));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.add_reservation_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -348,6 +357,7 @@ public class AddReservationMainActivity extends AppCompatActivity
         editDate.setText(selectedDateString);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         TextView editTime = findViewById(R.id.selectTimeNewReservation);
@@ -357,15 +367,13 @@ public class AddReservationMainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                intent = new Intent(this, ViewReservationMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(intent);
-                this.finish();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            intent = new Intent(this, ViewReservationMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.startActivity(intent);
+            this.finish();
+        } else {
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -380,7 +388,7 @@ public class AddReservationMainActivity extends AppCompatActivity
             tableSelected = parent.getItemAtPosition(position).toString();
         } else {
             tableSelected = null;
-            for (childCount = superParent.getChildCount(); childCount > 0; childCount--) {
+            for (childCount = superParent.getChildCount(); childCount > 0; childCount--)
                 if (tableSelected == null) {
                     parent = (AdapterView<?>) superParent.getChildAt(childCount - 1);
                     tableSelected = parent.getSelectedItem().toString();
@@ -388,7 +396,6 @@ public class AddReservationMainActivity extends AppCompatActivity
                     parent = (AdapterView<?>) superParent.getChildAt(childCount - 1);
                     tableSelected += "," + parent.getSelectedItem().toString();
                 }
-            }
         }
         Log.d(TAG, "onItemSelected: Tables Selected: " + tableSelected);
     }
