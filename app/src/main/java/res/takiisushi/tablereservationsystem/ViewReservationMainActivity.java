@@ -1,5 +1,6 @@
 package res.takiisushi.tablereservationsystem;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -27,6 +28,7 @@ import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class ViewReservationMainActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
@@ -83,10 +85,10 @@ public class ViewReservationMainActivity extends AppCompatActivity
 
     }
 
-    private void openReservationDetailsDialog(int position, View view) {
+    private void openReservationDetailsDialog(View view) {
         bundle = new Bundle();
         mCursor = getMatchingItems(ReservationContract.ReservationEntry._ID, dateToday, String.valueOf(view.getTag()));
-        mCursor.moveToPosition(position);
+        mCursor.moveToFirst();
         bundle.putLong("ID", mCursor.getLong(mCursor.getColumnIndex(ReservationContract.ReservationEntry._ID)));
         bundle.putString("NAME", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NAME)));
         bundle.putString("NUMBER", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NUMBER)));
@@ -139,17 +141,18 @@ public class ViewReservationMainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
         //getting the adaptor instance and then putting adaptor to the the recycler view
-        adapter = ReservationAdapter.getAdapter(mContext, getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
-        adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateToday));
-        recyclerView.setAdapter(adapter);
-
+        adapter = ReservationAdapter.getAdapter(mContext, getTodaysReservationItems(dateToday));
+        adapter.swapCursor(getTodaysReservationItems(dateToday));
         adapter.setOnItemClickListener(new ReservationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-                openReservationDetailsDialog(position, view);
+                openReservationDetailsDialog(view);
                 itemPosition = position;
+                Log.d(TAG, "onItemClick: Reservation Item with id: " + view.getTag() + " pressed.");
             }
         });
+
+        recyclerView.setAdapter(adapter);
 
         return recyclerView;
     }
@@ -175,11 +178,11 @@ public class ViewReservationMainActivity extends AppCompatActivity
         });
     }
 
-    private Cursor getMatchingItems(String column, String text) {
+    private Cursor getTodaysReservationItems(String text) {
         return database.query(
                 ReservationContract.ReservationEntry.TABLE_NAME,
                 null,
-                column + "=?",
+                ReservationContract.ReservationEntry.COLUMN_DATE + "=?",
                 new String[]{text},
                 null,
                 null,
@@ -212,8 +215,10 @@ public class ViewReservationMainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("NewApi")
     private void setupActionBar() {
-        getSupportActionBar().setTitle(getString(R.string.reservation_title));
+        Objects.requireNonNull(
+                getSupportActionBar()).setTitle(getString(R.string.reservation_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -221,7 +226,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
     private void removeItem(long id) {
         database.delete(ReservationContract.ReservationEntry.TABLE_NAME,
                 ReservationContract.ReservationEntry._ID + "=" + id, null);
-        adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, dateTextView.getText().toString()));
+        adapter.swapCursor(getTodaysReservationItems(dateTextView.getText().toString()));
     }
 
     @Override
@@ -236,7 +241,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
 
         dateTextView.setText(currentDateString);
 
-        adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_DATE, currentDateString));
+        adapter.swapCursor(getTodaysReservationItems(currentDateString));
         dateToday = currentDateString;
         recyclerView.setAdapter(adapter);
     }
