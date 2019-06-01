@@ -6,47 +6,44 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.rajasharan.layout.RearrangeableLayout;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class RestaurantLayoutMainActivity extends AppCompatActivity implements TableStatusDialog.TableStatusDialogListener {
-    private static final String TAG = "REST-REARRANGEABLE-LOUT";
+    private static final String TAG = "RESTAURANT-LAYOUT";
     private Context mContext;
     String dateToday = "";
     private SQLiteDatabase tableStatusDatabase;
     private SQLiteDatabase reservationDatabase;
     private String childName;
-    private long currentDown;
 
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+
+        RelativeLayout root = findViewById(R.id.restaurant_layout);
 
         //Initializing DB
         TableStatusDBHelper dbHelper = TableStatusDBHelper.getInstance(this);
@@ -62,7 +59,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
             reservationDatabase.execSQL("delete from " + ReservationContract.ReservationEntry.TABLE_NAME);
         }
 
-        getSupportActionBar().setTitle(getString(R.string.table_layout_title));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.table_layout_title));
 
         setContentView(R.layout.restaurant_main);
 
@@ -70,27 +67,11 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
 
         checkAndApplyTableStatutes();
 
-        final RearrangeableLayout root = findViewById(R.id.restaurant_layout);
-        root.setChildPositionListener(new RearrangeableLayout.ChildPositionListener() {
-            @Override
-            public void onChildMoved(View childView, Rect oldPosition, Rect newPosition) {
-                Log.d(TAG, childView.toString());
-                Log.d(TAG, oldPosition.toString() + " -> " + newPosition.toString());
-                //saveTable(root.getContext(), childView);//Doesn't seem to work
-            }
-        });
-
-        /*File res = mContext.getFileStreamPath("tables.jpeg");
-        if (res != null) {
-            getSavedCanvas(); //Doesn't work
-        }*/
-
         for (int counter = 0; counter < root.getChildCount(); counter++) {
             LinearLayout layout = (LinearLayout) root.getChildAt(counter);
-            MyTouchListener listener = new MyTouchListener();
-            layout.setOnTouchListener(listener);
+            MyClickListener listener = new MyClickListener();
+            layout.setOnClickListener(listener);
         }
-        //getSavedTables(root);//doesn't work
     }
 
     public void openTableStatusDialog() {
@@ -103,24 +84,24 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         List<String> statusList = new ArrayList<>();
         List<String> tablesList = new ArrayList<>();
 
-        Cursor cursor = null;
-
         try {
-            cursor = getAllItemsTableStatus();
+            Cursor cursor = getAllItemsTableStatus();
+            try {
 
-            while (cursor.moveToNext()) {
-                String status = cursor.getString(cursor.getColumnIndex(TableStatusContract.TableStatusEntry.COLUMN_STATUS));
+                while (cursor.moveToNext()) {
+                    String status = cursor.getString(cursor.getColumnIndex(TableStatusContract.TableStatusEntry.COLUMN_STATUS));
 
-                statusList.add(status);
+                    statusList.add(status);
 
-                String table = cursor.getString(cursor.getColumnIndex(TableStatusContract.TableStatusEntry.COLUMN_TABLENUM));
+                    String table = cursor.getString(cursor.getColumnIndex(TableStatusContract.TableStatusEntry.COLUMN_TABLENUM));
 
-                tablesList.add(table);
+                    tablesList.add(table);
+                }
+            } finally {
+                cursor.close();
             }
         } catch (Exception ex) {
             // Handle exception
-        } finally {
-            if (cursor != null) cursor.close();
         }
 
         for (int counter = 0; counter < tablesList.size(); counter++) {
@@ -279,19 +260,27 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     }
 
     private void addTableStatus(LinearLayout layout, String status) {
-        if (status.equals("Taken") || status.equals("Optaget")) {
-            layout.getBackground().setColorFilter(getResources().getColor(R.color.colorTaken), PorterDuff.Mode.OVERLAY);
-        } else if (status.equals("Available") || status.equals("Ledig")) {
-            if (layout.getChildCount() > 1) {
-                layout.getBackground().setColorFilter(getResources().getColor(R.color.colorReserved), PorterDuff.Mode.OVERLAY);
-            } else {
-                layout.getBackground().clearColorFilter();
-            }
-        } else if (status.equals("Needs Cleaning") || status.equals("Skal Ryddes")) {
-            layout.getBackground().setColorFilter(getResources().getColor(R.color.colorCleaning), PorterDuff.Mode.OVERLAY);
+        switch (status) {
+            case "Taken":
+            case "Optaget":
+                layout.getBackground().setColorFilter(getResources().getColor(R.color.colorTaken), PorterDuff.Mode.OVERLAY);
+                break;
+            case "Available":
+            case "Ledig":
+                if (layout.getChildCount() > 1) {
+                    layout.getBackground().setColorFilter(getResources().getColor(R.color.colorReserved), PorterDuff.Mode.OVERLAY);
+                } else {
+                    layout.getBackground().clearColorFilter();
+                }
+                break;
+            case "Needs Cleaning":
+            case "Skal Ryddes":
+                layout.getBackground().setColorFilter(getResources().getColor(R.color.colorCleaning), PorterDuff.Mode.OVERLAY);
+                break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void checkAndApplyReservations() {
         //getting Todays date
         dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime());
@@ -302,10 +291,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         List<String> timeList = new ArrayList<>();
         List<String> timeTableList = new ArrayList<>();
 
-        Cursor cursor = null;
-
-        try {
-            cursor = getMatchingItemsReservation(columns, dateToday);
+        try (Cursor cursor = getMatchingItemsReservation(columns, dateToday)) {
 
             while (cursor.moveToNext()) {
                 String tables = cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES));
@@ -322,8 +308,6 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
             }
         } catch (Exception ex) {
             // Handle exception
-        } finally {
-            if (cursor != null) cursor.close();
         }
 
         List<String> timeTablesSeperatedList = new ArrayList<>();
@@ -535,19 +519,6 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         }
     }
 
-    private void saveCanvas() {
-        View view = findViewById(R.id.restaurant_layout);
-        try {
-            FileOutputStream fos = mContext.openFileOutput("tables.jpeg", MODE_PRIVATE);
-            Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            view.draw(canvas);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     private Cursor getMatchingItemsTableStatus(String table) {
         return tableStatusDatabase.query(
                 TableStatusContract.TableStatusEntry.TABLE_NAME,
@@ -616,120 +587,16 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveCanvas();
-    }
+    public class MyClickListener implements View.OnClickListener {
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        File res = mContext.getFileStreamPath("tables.jpeg");
-        if (res != null) {
-            //getSavedCanvas(); //Doesn't work
-            Log.d(TAG, "onResume: get saved canvas");
-        }
-    }
-
-    public class MyTouchListener implements View.OnTouchListener {
-
-        @SuppressLint("ClickableViewAccessibility")
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            int CLICK_ACTION_THRESHHOLD = 200;
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                long lastTouchDown = currentDown;
-                currentDown = System.currentTimeMillis();
-                if (currentDown - lastTouchDown < CLICK_ACTION_THRESHHOLD) {
-                    if (v instanceof LinearLayout) {
-                        openTableStatusDialog();
-                        TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
-                        childName = child.getText().toString();
-                        Log.d(TAG, "onTouch: Child view text: " + childName);
-                    }
-
-                }
-                Log.d(TAG, "onTouch: Pressed! " + lastTouchDown);
+        public void onClick(View v) {
+            if (v instanceof LinearLayout) {
+                openTableStatusDialog();
+                TextView child = (TextView) ((LinearLayout) v).getChildAt(0);
+                childName = child.getText().toString();
+                Log.d(TAG, "onTouch: Child view text: " + childName);
             }
-            return true;
         }
     }
-
-    /*public void getSavedCanvas() {
-        View view = findViewById(R.id.restaurant_layout);
-        File res = mContext.getFileStreamPath("tables.jpeg");
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(res), options);
-        Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
-        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas canvas = new Canvas(mutableBitmap);
-        view.draw(canvas);
-    }*/
-
-    /*public void getSavedTables(RearrangeableLayout parent) {
-        ArrayList<View> al = new ArrayList<>();
-        boolean cont = true;
-        try {
-            // create an ObjectInputStream for the file we need to read from
-            ObjectInputStream ois = new ObjectInputStream(parent.getContext().openFileInput("tables"));
-
-            // read objects from file
-            while (cont) {
-                View view = null;
-                try {
-                    view = (View) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (view != null)
-                    al.add(view);
-                else
-                    cont = false;
-            }
-
-            if (!al.isEmpty()) {
-                View childView;
-
-                for (int count = 0; count <= al.size() - 1; count++) {
-                    for (int counter = 0; counter <= parent.getChildCount() - 1; counter++) {
-                        childView = parent.getChildAt(counter);
-
-                        //check if view on file is same as child view
-                        if (getResources().getResourceEntryName(parent.getChildAt(counter).getId()) == getResources().getResourceEntryName(al.get(count).getId())) {
-                            //check layout parameters are same or different
-                            if (al.get(count).getLayoutParams() != parent.getChildAt(counter).getLayoutParams()) {
-                                parent.removeView(childView);
-                                parent.addView(al.get(count));
-                                //parent.getChildAt(counter).setLeft(al.get(count).getLeft());
-                                //parent.getChildAt(counter).setTop(al.get(count).getTop());
-                                //parent.getChildAt(counter).setRight(al.get(count).getRight());
-                                //parent.getChildAt(counter).setBottom(al.get(count).getBottom());
-                            }
-                        }
-
-                    }
-                }
-            }
-
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }*/
-
-    /*public void saveTable(Context context, View viewTable) {
-        try {
-            // create a new file with an ObjectOutputStream
-            FileOutputStream out = context.openFileOutput("tables", MODE_APPEND);
-            ObjectOutputStream oout = new ObjectOutputStream(out);
-
-            // write something in the file
-            oout.writeObject(viewTable);
-            oout.flush();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }*/
 }
