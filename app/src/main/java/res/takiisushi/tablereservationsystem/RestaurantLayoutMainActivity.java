@@ -42,8 +42,7 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-
-        RelativeLayout root = findViewById(R.id.restaurant_layout);
+        setContentView(R.layout.restaurant_main);
 
         //Initializing DB
         TableStatusDBHelper dbHelper = TableStatusDBHelper.getInstance(this);
@@ -61,14 +60,14 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.table_layout_title));
 
-        setContentView(R.layout.restaurant_main);
-
         checkAndApplyReservations();
 
         checkAndApplyTableStatutes();
 
-        for (int counter = 0; counter < root.getChildCount(); counter++) {
-            LinearLayout layout = (LinearLayout) root.getChildAt(counter);
+        RelativeLayout mRelativeLayout = findViewById(R.id.restaurant_layout);
+
+        for (int counter = 0; counter < mRelativeLayout.getChildCount(); counter++) {
+            LinearLayout layout = (LinearLayout) mRelativeLayout.getChildAt(counter);
             MyClickListener listener = new MyClickListener();
             layout.setOnClickListener(listener);
         }
