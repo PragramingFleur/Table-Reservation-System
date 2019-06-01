@@ -1,15 +1,12 @@
 package res.takiisushi.tablereservationsystem;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,23 +18,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 public class RestaurantLayoutMainActivity extends AppCompatActivity implements TableStatusDialog.TableStatusDialogListener {
     private static final String TAG = "RESTAURANT-LAYOUT";
     private Context mContext;
-    String dateToday = "";
     private SQLiteDatabase tableStatusDatabase;
     private SQLiteDatabase reservationDatabase;
     private String childName;
 
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +48,11 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         if (day == 1) {
-            reservationDatabase.execSQL("delete from " + ReservationContract.ReservationEntry.TABLE_NAME);
+            String today = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+            reservationDatabase.delete(ReservationContract.ReservationEntry.TABLE_NAME, ReservationContract.ReservationEntry.COLUMN_DATE + "<'" + today + "'", null);
         }
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.table_layout_title));
+        getSupportActionBar().setTitle(getString(R.string.table_layout_title));
 
         checkAndApplyReservations();
 
@@ -279,10 +273,12 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void checkAndApplyReservations() {
         //getting Todays date
-        dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime());
+        Log.d(TAG, "checkAndApplyReservations: method");
+        Calendar cal = Calendar.getInstance();
+        String dateToday = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.DAY_OF_MONTH);
+        Log.d(TAG, "checkAndApplyReservations: " + dateToday);
 
         String[] columns = new String[]{ReservationContract.ReservationEntry.COLUMN_TABLES, ReservationContract.ReservationEntry.COLUMN_TIME};
 
@@ -290,23 +286,21 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         List<String> timeList = new ArrayList<>();
         List<String> timeTableList = new ArrayList<>();
 
-        try (Cursor cursor = getMatchingItemsReservation(columns, dateToday)) {
+        Cursor cursor = getMatchingItemsReservation(columns, dateToday);
+        Log.d(TAG, "checkAndApplyReservations: " + cursor.getCount());
+        while (cursor.moveToNext()) {
+            String tables = cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES));
 
-            while (cursor.moveToNext()) {
-                String tables = cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES));
+            tableList.add(tables);
+            Log.d(TAG, "checkAndApplyReservations: " + tables);
 
-                tableList.add(tables);
-                Log.d(TAG, "checkAndApplyReservations: " + tables);
+            String time = cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TIME));
 
-                String time = cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TIME));
+            timeList.add(tables);
+            Log.d(TAG, "checkAndApplyReservations: " + time);
 
-                timeList.add(tables);
-                Log.d(TAG, "checkAndApplyReservations: " + time);
-
-                timeTableList.add(time + "+" + tables);
-            }
-        } catch (Exception ex) {
-            // Handle exception
+            timeTableList.add(time + "+" + tables);
+            Log.d(TAG, "checkAndApplyReservations: " + time + "+" + tables);
         }
 
         List<String> timeTablesSeperatedList = new ArrayList<>();
@@ -499,8 +493,8 @@ public class RestaurantLayoutMainActivity extends AppCompatActivity implements T
         return reservationDatabase.query(
                 ReservationContract.ReservationEntry.TABLE_NAME,
                 columns,
-                ReservationContract.ReservationEntry.COLUMN_DATE + "=?",
-                new String[]{date},
+                ReservationContract.ReservationEntry.COLUMN_DATE + "='" + date + "'",
+                null,
                 null,
                 null,
                 ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"

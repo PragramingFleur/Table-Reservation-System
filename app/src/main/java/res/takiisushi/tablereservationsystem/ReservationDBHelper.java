@@ -10,7 +10,7 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
     private static ReservationDBHelper instance;
 
     public static final String DATABASE_NAME = "reservationlist.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 4;
 
     private ReservationDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

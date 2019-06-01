@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -36,13 +37,17 @@ public class ViewReservationMainActivity extends AppCompatActivity
     private static final String TAG = "VIEW-RESERVATION";
     Context mContext;
     Cursor mCursor;
+
     int itemPosition;
+
     TextView dateTextView;
     RecyclerView recyclerView;
+    String dbDate;
+
     private SQLiteDatabase database;
     private SQLiteDatabase tableStatusDB;
     private ReservationAdapter adapter;
-    String dateToday = "";
+
     private Bundle bundle;
 
     @Override
@@ -50,12 +55,15 @@ public class ViewReservationMainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservation_main);
         //Initialize some values
+        //Initialize some values
         mContext = this;
         dateTextView = findViewById(R.id.dateViewer);
 
         //Putting todays date into the textview
-        dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime());
+        Calendar cal = Calendar.getInstance();
+        String dateToday = DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.getTime());
         dateTextView.setText(dateToday);
+        dbDate = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.DAY_OF_MONTH);
 
         //getting table status db
         TableStatusDBHelper dbHelperTable = TableStatusDBHelper.getInstance(mContext);
@@ -87,7 +95,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
 
     private void openReservationDetailsDialog(View view) {
         bundle = new Bundle();
-        mCursor = getMatchingItems(ReservationContract.ReservationEntry._ID, dateToday, String.valueOf(view.getTag()));
+        mCursor = getMatchingItems(ReservationContract.ReservationEntry._ID, dbDate, String.valueOf(view.getTag()));
         mCursor.moveToFirst();
         bundle.putLong("ID", mCursor.getLong(mCursor.getColumnIndex(ReservationContract.ReservationEntry._ID)));
         bundle.putString("NAME", mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NAME)));
@@ -110,8 +118,8 @@ public class ViewReservationMainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter = ReservationAdapter.getAdapter(mContext, getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dateToday, query));
-                adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dateToday, query));
+                adapter = ReservationAdapter.getAdapter(mContext, getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dbDate, query));
+                adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dbDate, query));
                 recyclerView.setAdapter(adapter);
 
                 return false;
@@ -119,8 +127,9 @@ public class ViewReservationMainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter = ReservationAdapter.getAdapter(mContext, getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dateToday, newText));
-                adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dateToday, newText));
+                adapter = ReservationAdapter.getAdapter(mContext, getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dbDate, newText));
+                adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dbDate, newText));
+                adapter.swapCursor(getMatchingItems(ReservationContract.ReservationEntry.COLUMN_NUMBER, dbDate, newText));
                 recyclerView.setAdapter(adapter);
 
                 return false;
@@ -141,8 +150,8 @@ public class ViewReservationMainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
         //getting the adaptor instance and then putting adaptor to the the recycler view
-        adapter = ReservationAdapter.getAdapter(mContext, getTodaysReservationItems(dateToday));
-        adapter.swapCursor(getTodaysReservationItems(dateToday));
+        adapter = ReservationAdapter.getAdapter(mContext, getTodaysReservationItems(dbDate));
+        adapter.swapCursor(getTodaysReservationItems(dbDate));
         adapter.setOnItemClickListener(new ReservationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
@@ -178,12 +187,12 @@ public class ViewReservationMainActivity extends AppCompatActivity
         });
     }
 
-    private Cursor getTodaysReservationItems(String text) {
+    private Cursor getTodaysReservationItems(String date) {
         return database.query(
                 ReservationContract.ReservationEntry.TABLE_NAME,
                 null,
                 ReservationContract.ReservationEntry.COLUMN_DATE + "=?",
-                new String[]{text},
+                new String[]{date},
                 null,
                 null,
                 ReservationContract.ReservationEntry.COLUMN_TIME + " ASC"
@@ -242,8 +251,10 @@ public class ViewReservationMainActivity extends AppCompatActivity
         dateTextView.setText(currentDateString);
 
         adapter.swapCursor(getTodaysReservationItems(currentDateString));
-        dateToday = currentDateString;
-        recyclerView.setAdapter(adapter);
+        dbDate = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+        adapter.swapCursor(getTodaysReservationItems(dbDate));
+        Toast toast = Toast.makeText(mContext, "Reservation List Updated!", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override

@@ -53,6 +53,7 @@ public class AddReservationMainActivity extends AppCompatActivity
     private EditText editName;
     private EditText editNumber;
     private TextView editDate;
+    private String dbDate;
     private TextView editTime;
     private EditText editAdultGuestNum;
     private EditText editChildGuestNum;
@@ -81,6 +82,7 @@ public class AddReservationMainActivity extends AppCompatActivity
         Calendar cal = Calendar.getInstance();
         editDate.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.getTime()));
         editTime.setText("17:00");
+        dbDate = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.DAY_OF_MONTH);
 
         //Initializing DB and adaptor
         ReservationDBHelper dbHelper = ReservationDBHelper.getInstance(mContext);
@@ -106,7 +108,7 @@ public class AddReservationMainActivity extends AppCompatActivity
                 boolean isCorrect = checkFields(editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
                 if (isCorrect) {
                     //adds reservation to the db
-                    addReservationToDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
+                    addReservationToDB(editName, editNumber, editTime, editAdultGuestNum, editChildGuestNum);
                 }
             }
         });
@@ -137,13 +139,14 @@ public class AddReservationMainActivity extends AppCompatActivity
         );
     }
 
-    private void addReservationToDB(EditText editName, EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
+    private void addReservationToDB(EditText editName, EditText editNumber, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
         String guests = "V: " + editAdultGuestNum.getText().toString() + " B: " + editChildGuestNum.getText().toString();
+
         ContentValues values = new ContentValues();
         values.put(ReservationEntry.COLUMN_NAME, editName.getText().toString().trim());
         values.put(ReservationEntry.COLUMN_NUMBER, editNumber.getText().toString().trim());
         values.put(ReservationEntry.COLUMN_TIME, editTime.getText().toString());
-        values.put(ReservationEntry.COLUMN_DATE, editDate.getText().toString());
+        values.put(ReservationEntry.COLUMN_DATE, dbDate);
         values.put(ReservationEntry.COLUMN_GUESTS, guests);
         values.put(ReservationEntry.COLUMN_TABLES, tableSelected);
 
@@ -350,6 +353,9 @@ public class AddReservationMainActivity extends AppCompatActivity
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        dbDate = year + "-" + month + "-" + dayOfMonth;
+        Log.d(TAG, "onDateSet: " + dbDate);
 
         String selectedDateString = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
 
