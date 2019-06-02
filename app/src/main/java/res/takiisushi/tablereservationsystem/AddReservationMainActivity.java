@@ -105,7 +105,7 @@ public class AddReservationMainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 //Makes sure fields are correct before adding to db
-                boolean isCorrect = checkFields(editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
+                boolean isCorrect = checkFields(editNumber, editTime, editAdultGuestNum, editChildGuestNum);
                 if (isCorrect) {
                     //adds reservation to the db
                     addReservationToDB(editName, editNumber, editTime, editAdultGuestNum, editChildGuestNum);
@@ -158,12 +158,12 @@ public class AddReservationMainActivity extends AppCompatActivity
         this.startActivity(intent);
     }
 
-    private boolean checkFields(EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
+    private boolean checkFields(EditText editNumber, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
         List<Boolean> isCorrectCollection = new ArrayList<>();
         boolean isCorrect;
 
         Calendar c = Calendar.getInstance();
-        Date today = c.getTime();
+        String today = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
 
         TextView tableWarning = findViewById(R.id.tableTextView);
 
@@ -179,11 +179,11 @@ public class AddReservationMainActivity extends AppCompatActivity
 
         if (!editDate.getText().toString().isEmpty()) {
             //If date textview is not empty then check if the date is before today
-            String datePicked = editDate.getText().toString();
             try {
-                @SuppressLint("SimpleDateFormat") Date strDate = new SimpleDateFormat("yyyy/MM/dd").parse(datePicked);
+                @SuppressLint("SimpleDateFormat") Date datePicked = new SimpleDateFormat("yyyy-MM-dd").parse(dbDate);
+                @SuppressLint("SimpleDateFormat") Date todayDate = new SimpleDateFormat("yyyy-MM-dd").parse(today);
 
-                if (today.after(strDate)) {
+                if (todayDate.after(datePicked)) {
                     //date isn't supposed to be before today
                     isCorrectCollection.add(false);
                     editDate.setError("Date has to be today or later");

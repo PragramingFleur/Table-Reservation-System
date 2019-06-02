@@ -235,7 +235,9 @@ public class ViewReservationMainActivity extends AppCompatActivity
     private void removeItem(long id) {
         database.delete(ReservationContract.ReservationEntry.TABLE_NAME,
                 ReservationContract.ReservationEntry._ID + "=" + id, null);
-        adapter.swapCursor(getTodaysReservationItems(dateTextView.getText().toString()));
+        adapter.swapCursor(getTodaysReservationItems(dbDate));
+        Toast toast = Toast.makeText(mContext, "Item " + id + " deleted!", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
