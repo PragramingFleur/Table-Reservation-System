@@ -27,9 +27,9 @@ When a person who has reserved a table has arrived then the user of the tablet a
 
 ## Documentation and Guides
 
-### Main ![Bachelor Project Documentatin](https://1drv.ms/w/s!AvK4KZjBMGCdibZVhBzVWHgmFbYQCg)
+### Main [Bachelor Project Documentatin](https://1drv.ms/w/s!AvK4KZjBMGCdibZVhBzVWHgmFbYQCg)
 This document is for the programmer's Professional Bachelor Programme in Software Development. The document contains all asepects of this application.
 
 ## Installation
 
-Simply install ![This](https://github.com/PragramingFleur/TableReservationSystem/blob/tablet/app/TakiiSushiTTRS-1.0-debug.apk) file to the tablet. Then run that file by tapping it and the application will install on the application.
+Simply install [This](https://github.com/PragramingFleur/TableReservationSystem/blob/tablet/app/TakiiSushiTTRS-1.0-debug.apk) file to the tablet. Then run that file by tapping it and the application will install on the application.
