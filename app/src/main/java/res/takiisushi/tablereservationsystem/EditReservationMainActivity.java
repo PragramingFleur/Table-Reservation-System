@@ -8,19 +8,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -31,20 +25,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class EditReservationMainActivity extends AppCompatActivity
         implements TimePickerDialog.OnTimeSetListener,
-        DatePickerDialog.OnDateSetListener,
-        AdapterView.OnItemSelectedListener {
+        DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "EDIT-RESERVATION";
     Context mContext;
-
-    String tableSelected = "";
-    int spinnerId = 0;
 
     private EditText editName;
     private EditText editNumber;
@@ -56,16 +44,11 @@ public class EditReservationMainActivity extends AppCompatActivity
     private SQLiteDatabase database;
     private ReservationAdapter adapter;
 
-    private LinearLayout linearLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reservation_main);
         mContext = this;
-
-        //initialize the layout for adding the spinner to
-        linearLayout = findViewById(R.id.spinnerLayout);
 
         //Initializing all fields from the form
         editName = findViewById(R.id.editName);
@@ -82,6 +65,7 @@ public class EditReservationMainActivity extends AppCompatActivity
 
         //get item id from details dialog
         final long id = getIntent().getLongExtra("id", -1);
+        final int arrived = getIntent().getIntExtra("arrived", 0);
 
         //set all necessary fields
         setFormFields(id);
@@ -91,9 +75,6 @@ public class EditReservationMainActivity extends AppCompatActivity
 
         //Sets up dialogs for the time and date picker
         setupDialogs();
-
-        //Method for deleting the last spinner and adding a spinner for choosing tables
-        createDeleteTableSpinner(linearLayout);
 
         //Button and click listener for when add Reservation is clicked
         Button addReservationButton = findViewById(R.id.reserveButton);
@@ -105,7 +86,7 @@ public class EditReservationMainActivity extends AppCompatActivity
                 boolean isCorrect = checkFields(editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
                 if (isCorrect) {
                     //adds reservation to the db
-                    editReservationToDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum, id);
+                    editReservationInDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum, id, arrived);
                 }
             }
         });
@@ -137,8 +118,6 @@ public class EditReservationMainActivity extends AppCompatActivity
                 List<String> guests = Arrays.asList(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS)).split("\\s+"));
                 editAdultGuestNum.setText(guests.get(1));
                 editChildGuestNum.setText(guests.get(3));
-                List<String> tables = Arrays.asList(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES)).split(","));
-                createTableSpinnerFromDB(tables);
             } while (cursor.moveToNext());
         }
     }
@@ -167,7 +146,7 @@ public class EditReservationMainActivity extends AppCompatActivity
         );
     }
 
-    private void editReservationToDB(EditText editName, EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum, long id) {
+    private void editReservationInDB(EditText editName, EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum, long id, int arrived) {
         String guests = "V: " + editAdultGuestNum.getText().toString() + " B: " + editChildGuestNum.getText().toString();
         ContentValues values = new ContentValues();
         values.put(ReservationContract.ReservationEntry.COLUMN_NAME, editName.getText().toString().trim());
@@ -175,11 +154,10 @@ public class EditReservationMainActivity extends AppCompatActivity
         values.put(ReservationContract.ReservationEntry.COLUMN_TIME, editTime.getText().toString());
         values.put(ReservationContract.ReservationEntry.COLUMN_DATE, editDate.getText().toString());
         values.put(ReservationContract.ReservationEntry.COLUMN_GUESTS, guests);
-        values.put(ReservationContract.ReservationEntry.COLUMN_TABLES, tableSelected);
+        values.put(ReservationContract.ReservationEntry.COLUMN_ARRIVED, arrived);
 
         database.update(ReservationContract.ReservationEntry.TABLE_NAME, values,
                 ReservationContract.ReservationEntry._ID + "=" + id, null);
-        adapter.swapCursor(getAllItems());
 
         Intent intent = new Intent(this, ViewReservationMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -192,8 +170,6 @@ public class EditReservationMainActivity extends AppCompatActivity
 
         Calendar c = Calendar.getInstance();
         Date today = c.getTime();
-
-        TextView tableWarning = findViewById(R.id.tableTextView);
 
         //Check if required fields are filled out
         if (editNumber.getText().toString().trim().length() < 8 || editNumber.getText().toString().trim().length() > 8) {
@@ -286,28 +262,6 @@ public class EditReservationMainActivity extends AppCompatActivity
             editChildGuestNum.setError("Required");
         }
 
-        if (!tableSelected.isEmpty()) {
-            //Checking for duplicate tables
-            List<String> tableList = Arrays.asList(tableSelected.split(","));
-
-            if (tableList.size() > 1) {
-                final Set<Integer> set = new HashSet<>();
-
-                for (String string : tableList) {
-                    if (!set.add(Integer.parseInt(string))) {
-                        tableWarning.setError("Cannot Repeat Table number");
-                        isCorrectCollection.add(false);
-                        break;
-                    } else {
-                        isCorrectCollection.add(true);
-                    }
-                }
-            }
-        } else {
-            isCorrectCollection.add(true);
-            tableWarning.setError("Need Table");
-        }
-
         isCorrect = !isCorrectCollection.contains(false);
 
         return isCorrect;
@@ -341,53 +295,6 @@ public class EditReservationMainActivity extends AppCompatActivity
                 datePicker.show(getSupportFragmentManager(), "new reservation date picker");
             }
         });
-    }
-
-    private void createDeleteTableSpinner(final LinearLayout layout) {
-        final AdapterView.OnItemSelectedListener listener = this;
-        //Button and logic to add new spinner when add new table1 button is pressed
-        FloatingActionButton addTableButton = findViewById(R.id.addTableButton);
-
-        addTableButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Spinner newSpinner = new Spinner(mContext);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.table_Numbers, android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                newSpinner.setAdapter(adapter);
-                newSpinner.setId(spinnerId);
-                spinnerId = spinnerId + 1;
-                newSpinner.setOnItemSelectedListener(listener);
-                layout.addView(newSpinner);
-            }
-        });
-
-        //Button and logic to remove last spinner when remove table1 button is pressed
-        FloatingActionButton removeTableButton = findViewById(R.id.removeTableButton);
-
-        removeTableButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layout.removeViewAt(layout.getChildCount() - 1);
-            }
-        });
-    }
-
-    private void createTableSpinnerFromDB(List<String> tables) {
-        final AdapterView.OnItemSelectedListener listener = this;
-
-        for (String table : tables) {
-            Spinner newSpinner = new Spinner(mContext);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.table_Numbers, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            newSpinner.setAdapter(adapter);
-            newSpinner.setId(spinnerId);
-            newSpinner.setSelection(adapter.getPosition(table));
-            spinnerId = spinnerId + 1;
-            newSpinner.setOnItemSelectedListener(listener);
-            linearLayout.addView(newSpinner);
-        }
-
     }
 
     @Override
@@ -424,33 +331,5 @@ public class EditReservationMainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        LinearLayout superParent = (LinearLayout) parent.getParent();
-        int childCount = superParent.getChildCount();
-        tableSelected = null;
-        if (childCount == 1) {
-            tableSelected = parent.getItemAtPosition(position).toString();
-        } else {
-            tableSelected = null;
-            for (childCount = superParent.getChildCount(); childCount > 0; childCount--) {
-                if (tableSelected == null) {
-                    parent = (AdapterView<?>) superParent.getChildAt(childCount - 1);
-                    tableSelected = parent.getSelectedItem().toString();
-                } else {
-                    parent = (AdapterView<?>) superParent.getChildAt(childCount - 1);
-                    tableSelected += "," + parent.getSelectedItem().toString();
-                }
-            }
-        }
-        Log.d(TAG, "onItemSelected: Tables Selected: " + tableSelected);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E7D5C0"
-    android:padding="100dp"
+    android:padding="20dp"
     tools:context=".AddReservationMainActivity">
 
     <EditText
@@ -165,51 +165,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editMobileNum" />
 
-    <TextView
-        android:id="@+id/tableTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView9"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
-        android:padding="12dp"
-        android:text="Table/s"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addTableButton"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:maxHeight="24dp"
-        android:minHeight="24dp"
-        app:backgroundTint="#425564"
-        app:fabSize="mini"
-        app:layout_constraintEnd_toStartOf="@+id/removeTableButton"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:srcCompat="@drawable/ic_add_grey_48dp" />
-
     <Button
         android:id="@+id/reserveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/reserve_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
         android:id="@+id/cancelButton"
@@ -217,10 +182,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:text="@string/cancel_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/selectDateNewReservation"
@@ -253,34 +218,5 @@
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/removeTableButton"
-        android:layout_width="40dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:fabSize="mini"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:srcCompat="@drawable/ic_remove_grey_24dp" />
-
-    <LinearLayout
-        android:id="@+id/spinnerLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="start"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/addTableButton"
-        app:layout_constraintStart_toEndOf="@+id/tableTextView"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 </android.support.constraint.ConstraintLayout>

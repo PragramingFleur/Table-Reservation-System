@@ -54,13 +54,9 @@
     <string name="select_time">Vælg tid</string>
     <string name="ok_title">OK</string>
     <string name="table_status_title">Bord Status</string>
-    <string-array name="table_status">
-        <item>Ledig</item>
-        <item>Optaget</item>
-        <item>Skal Ryddes</item>
-    </string-array>
     <string name="arrived_text">Ankomst</string>
     <string name="reservation_details_title">Reservation Detaljer</string>
     <string name="edit_text">Rediger</string>
     <string name="id_text">ID</string>
+    <string name="reservation_history_title">Reservation Historik</string>
 </resources>

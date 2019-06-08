@@ -2,7 +2,6 @@ package res.takiisushi.tablereservationsystem;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,8 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -31,9 +28,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-public class ViewReservationMainActivity extends AppCompatActivity
+public class ViewReservationHistoryMainActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
         ReservationDetailsDialog.ReservationDetailsDialogListener {
+
     private static final String TAG = "VIEW-RESERVATION";
     Context mContext;
     Cursor mCursor;
@@ -99,7 +97,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
         List<String> guests = Arrays.asList(mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS)).split("\\s+"));
         bundle.putString("ADULTS", guests.get(1));
         bundle.putString("CHILDREN", guests.get(3));
-        bundle.putInt("ARRIVED", 0);
+        bundle.putInt("ARRIVED", 1);
 
         Log.d(TAG, "openReservationDetailsDialog: opened");
         ReservationDetailsDialog dialog = new ReservationDetailsDialog();
@@ -186,7 +184,7 @@ public class ViewReservationMainActivity extends AppCompatActivity
                 ReservationContract.ReservationEntry.TABLE_NAME,
                 null,
                 ReservationContract.ReservationEntry.COLUMN_DATE + "=? AND " +
-                        ReservationContract.ReservationEntry.COLUMN_ARRIVED + "=0",
+                        ReservationContract.ReservationEntry.COLUMN_ARRIVED + "=1",
                 new String[]{date},
                 null,
                 null,
@@ -224,7 +222,9 @@ public class ViewReservationMainActivity extends AppCompatActivity
     @SuppressLint("NewApi")
     private void setupActionBar() {
         Objects.requireNonNull(
-                getSupportActionBar()).setTitle(getString(R.string.reservation_title));
+                getSupportActionBar()).setTitle(getString(R.string.reservation_history_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void removeItem(long id) {
@@ -258,30 +258,16 @@ public class ViewReservationMainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch (item.getItemId()) {
-            case R.id.addReservationItem:
-                intent = new Intent(this, AddReservationMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(intent);
-                break;
-            case R.id.showReservationHistoryItem:
-                intent = new Intent(this, ViewReservationHistoryMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(intent);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            intent = new Intent(this, ViewReservationMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.startActivity(intent);
+            this.finish();
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-
         return true;
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.reservation_layout_menu, menu);
-        return true;
     }
 
     @Override
@@ -289,20 +275,14 @@ public class ViewReservationMainActivity extends AppCompatActivity
         Intent intent = new Intent(mContext, EditReservationMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("id", bundle.getLong("ID"));
+        intent.putExtra("arrived", 1);
         this.startActivity(intent);
         this.finish();
     }
 
     @Override
     public void moveToHistory(long id, boolean isArrived) {
-        ContentValues values = new ContentValues();
-        values.put(ReservationContract.ReservationEntry.COLUMN_ARRIVED, 1);
-
-        database.update(ReservationContract.ReservationEntry.TABLE_NAME, values,
-                ReservationContract.ReservationEntry._ID + "=" + id, null);
-        adapter.swapCursor(getTodaysReservationItems(dbDate));
-
-        Toast toast = Toast.makeText(mContext, "Reservation Arrived! Moved to History.", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(mContext, "Can't do that.", Toast.LENGTH_SHORT);
         toast.show();
     }
 }

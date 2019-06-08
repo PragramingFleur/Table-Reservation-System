@@ -91,9 +91,5 @@
     <string name="reservation_details_title">Reservation Details</string>
     <string name="edit_text">Edit</string>
     <string name="id_text">ID</string>
-    <string-array name="table_status">
-        <item>Available</item>
-        <item>Taken</item>
-        <item>Needs Cleaning</item>
-    </string-array>
+    <string name="reservation_history_title">Reservation History</string>
 </resources>

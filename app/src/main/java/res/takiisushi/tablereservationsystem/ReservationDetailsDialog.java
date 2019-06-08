@@ -28,7 +28,7 @@ public class ReservationDetailsDialog extends AppCompatDialogFragment {
         String time = bundle.getString("TIME");
         String adults = bundle.getString("ADULTS");
         String children = bundle.getString("CHILDREN");
-        final String tables = bundle.getString("TABLES");
+        int arrived = bundle.getInt("ARRIVED");
 
         TextView idTextView = view.findViewById(R.id.idTextView);
         idTextView.setText(String.valueOf(id));
@@ -44,28 +44,41 @@ public class ReservationDetailsDialog extends AppCompatDialogFragment {
         adultsTextView.setText(adults);
         TextView childrenTextView = view.findViewById(R.id.childGuestsTextView);
         childrenTextView.setText(children);
-        TextView tablesTextView = view.findViewById(R.id.tablesTextView);
-        tablesTextView.setText(tables);
-
-        builder.setView(view)
-                .setTitle(getString(R.string.reservation_details_title))
-                .setNegativeButton(getString(R.string.cancel_text), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setPositiveButton(getString(R.string.arrived_text), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String status = "Taken";
-                listener.updateTableStatus(status, tables, id);
-            }
-        }).setNeutralButton(getString(R.string.edit_text), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                listener.changeReservationDetails(id);
-            }
-        });
+        if (arrived == 0) {
+            builder.setView(view)
+                    .setTitle(getString(R.string.reservation_details_title))
+                    .setNegativeButton(getString(R.string.cancel_text), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(getString(R.string.arrived_text), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    boolean isArrived = true;
+                    listener.moveToHistory(id, isArrived);
+                }
+            }).setNeutralButton(getString(R.string.edit_text), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    listener.changeReservationDetails(id);
+                }
+            });
+        } else {
+            builder.setView(view)
+                    .setTitle(getString(R.string.reservation_details_title))
+                    .setNegativeButton(getString(R.string.cancel_text), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setNeutralButton(getString(R.string.edit_text), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    listener.changeReservationDetails(id);
+                }
+            });
+        }
         return builder.create();
     }
 
@@ -82,8 +95,8 @@ public class ReservationDetailsDialog extends AppCompatDialogFragment {
     }
 
     public interface ReservationDetailsDialogListener {
-        void updateTableStatus(String status, String tableNum, long id);
-
         void changeReservationDetails(long id);
+
+        void moveToHistory(long id, boolean isArrived);
     }
 }

@@ -10,7 +10,7 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
     private static ReservationDBHelper instance;
 
     public static final String DATABASE_NAME = "reservationlist.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
 
     private ReservationDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,7 +37,7 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
                 ReservationEntry.COLUMN_TIME + " TEXT NOT NULL, " +
                 ReservationEntry.COLUMN_DATE + " TEXT NOT NULL, " +
                 ReservationEntry.COLUMN_GUESTS + " TEXT NOT NULL, " +
-                ReservationEntry.COLUMN_TABLES + " TEXT NOT NULL );";
+                ReservationEntry.COLUMN_ARRIVED + " INTEGER NOT NULL);";
 
         db.execSQL(SQL_CREATE_RESERVATION_TABLE);
     }

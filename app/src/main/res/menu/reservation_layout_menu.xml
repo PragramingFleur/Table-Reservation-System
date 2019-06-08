@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/showReservationHistoryItem"
+        android:icon="@drawable/ic_history_grey_24dp"
+        android:title="To History"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/addReservationItem"
         android:icon="@drawable/ic_add_grey_48dp"
         android:title="To Reservation Pressed"
         app:showAsAction="always" />
-
 </menu>

@@ -55,13 +55,11 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         String time = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TIME));
         String guests = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS));
-        String table = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TABLES));
         String number = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NUMBER));
         long id = mCursor.getLong(mCursor.getColumnIndex(ReservationContract.ReservationEntry._ID));
 
         reservationViewHolder.timeText.setText(time);
         reservationViewHolder.guestsText.setText(guests);
-        reservationViewHolder.tableText.setText(table);
         reservationViewHolder.numberText.setText(number);
         reservationViewHolder.itemView.setTag(id);
     }
@@ -86,7 +84,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     public class ReservationViewHolder extends RecyclerView.ViewHolder {
         public TextView timeText;
         public TextView guestsText;
-        public TextView tableText;
         public TextView numberText;
 
         public ReservationViewHolder(@NonNull final View itemView) {
@@ -94,7 +91,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
             timeText = itemView.findViewById(R.id.reservationTime);
             guestsText = itemView.findViewById(R.id.reservationGuests);
-            tableText = itemView.findViewById(R.id.reservationTable);
             numberText = itemView.findViewById(R.id.reservationMobileNum);
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:padding="8dp">
 
     <TextView
@@ -9,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="start"
         android:padding="8dp"
         android:text="00:00"
         android:textSize="18sp" />
@@ -19,20 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="start"
         android:padding="8dp"
         android:text="0V + 0B"
         android:textAllCaps="true"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/reservationTable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="1"
         android:textSize="18sp" />
 
     <TextView
@@ -40,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="start"
         android:padding="8dp"
         android:text="12345678"
         android:textSize="18sp" />
