@@ -4,16 +4,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ReservationViewHolder> {
     private static ReservationAdapter adapter;
     private Context mContext;
     private Cursor mCursor;
     private OnItemClickListener mListener;
+    private String TAG = "RESERVATION-ADAPTOR";
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
@@ -32,7 +41,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
         if (adapter == null) {
             adapter = new ReservationAdapter(context.getApplicationContext(), cursor);
         }
@@ -62,6 +70,144 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         reservationViewHolder.guestsText.setText(guests);
         reservationViewHolder.numberText.setText(number);
         reservationViewHolder.itemView.setTag(id);
+
+        List<String> afterTimes = new ArrayList<>();
+        List<String> beforeTimes = new ArrayList<>();
+
+        String dateFormat = "HH:mm";
+        //13:00-13:59
+        String after13 = "12:59";
+        String before14 = "14:00";
+        afterTimes.add(after13);
+        beforeTimes.add(before14);
+
+        //14:00-14:59
+        String after14 = "13:59";
+        String before15 = "15:00";
+        afterTimes.add(after14);
+        beforeTimes.add(before15);
+
+        //15:00-15:59
+        String after15 = "14:59";
+        String before16 = "16:00";
+        afterTimes.add(after15);
+        beforeTimes.add(before16);
+
+        //16:00-16:59
+        String after16 = "15:59";
+        String before17 = "17:00";
+        afterTimes.add(after16);
+        beforeTimes.add(before17);
+
+        //17:00-17:59
+        String after17 = "16:59";
+        String before18 = "18:00";
+        afterTimes.add(after17);
+        beforeTimes.add(before18);
+
+        //18:00-18:59
+        String after18 = "17:59";
+        String before19 = "19:00";
+        afterTimes.add(after18);
+        beforeTimes.add(before19);
+
+        //19:00-19:59
+        String after19 = "18:59";
+        String before20 = "20:00";
+        afterTimes.add(after19);
+        beforeTimes.add(before20);
+
+        //20:00-20:59
+        String after20 = "19:59";
+        String before21 = "21:00";
+        afterTimes.add(after20);
+        beforeTimes.add(before21);
+
+        //21:00-22:00
+        String after21 = "20:59";
+        String before22 = "22:01";
+        afterTimes.add(after21);
+        beforeTimes.add(before22);
+
+        /*//17:00-17:30
+        String after17 = "16:59";
+        String before1730 = "17:30";
+        afterTimes.add(after17);
+        beforeTimes.add(before1730);
+
+        //17:31-18:00
+        String after1730 = "17:30";
+        String before18 = "18:01";
+        afterTimes.add(after1730);
+        beforeTimes.add(before18);
+
+        //18:01-18:30
+        String after18 = "18:00";
+        String before1830 = "18:31";
+        afterTimes.add(after18);
+        beforeTimes.add(before1830);
+
+        //18:31-19:00
+        String after1830 = "18:30";
+        String before19 = "19:01";
+        afterTimes.add(after1830);
+        beforeTimes.add(before19);
+
+        //19:01-19:30
+        String after19 = "19:00";
+        String before1930 = "19:31";
+        afterTimes.add(after19);
+        beforeTimes.add(before1930);
+
+        //19:31-20:00
+        String after1930 = "19:30";
+        String before20 = "20:01";
+        afterTimes.add(after1930);
+        beforeTimes.add(before20);
+
+        //20:01-21:00
+        String after20 = "20:00";
+        String before21 = "21:01";
+        afterTimes.add(after20);
+        beforeTimes.add(before21);
+
+        //21:01-22:00
+        String after21 = "21:00";
+        String before22 = "22:01";
+        afterTimes.add(after21);
+        beforeTimes.add(before22);*/
+
+        Calendar afterTime = Calendar.getInstance();
+        Calendar beforeTime = Calendar.getInstance();
+        Calendar nowTime = Calendar.getInstance();
+        try {
+            nowTime = setTimeToCalendar(dateFormat, time, false);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date curDate = nowTime.getTime();
+
+        int colorA = mContext.getResources().getColor(R.color.itemColorA);
+        int colorB = mContext.getResources().getColor(R.color.itemColorB);
+
+        for (int counter = 0; counter < afterTimes.size(); counter++) {
+            try {
+                afterTime = setTimeToCalendar(dateFormat, afterTimes.get(counter), false);
+                beforeTime = setTimeToCalendar(dateFormat, beforeTimes.get(counter), false);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (curDate.after(afterTime.getTime()) && curDate.before(beforeTime.getTime())) {
+                Log.d(TAG, "onBindViewHolder: after time: " + afterTime.getTime().toString() + " before time: " + beforeTime.getTime().toString() + "now time: " + nowTime.getTime().toString());
+
+                if (counter % 2 == 0) {
+                    reservationViewHolder.itemView.setBackgroundColor(colorA);
+                } else {
+                    reservationViewHolder.itemView.setBackgroundColor(colorB);
+                }
+            }
+        }
     }
 
     @Override
@@ -106,5 +252,16 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                 }
             });
         }
+    }
+
+    private Calendar setTimeToCalendar(String dateFormat, String date, boolean addADay) throws ParseException {
+        Date time = new SimpleDateFormat(dateFormat).parse(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(time);
+
+        if (addADay) {
+            cal.add(Calendar.DATE, 1);
+        }
+        return cal;
     }
 }

@@ -183,8 +183,8 @@ public class AddReservationMainActivity extends AppCompatActivity
             //Check if time is between 13:00 and 22:00
             try {
                 String selectedTime = editTime.getText().toString();
-                String minTime = "13:00";
-                String maxTime = "22:00";
+                String minTime = "12:59";
+                String maxTime = "22:01";
 
                 @SuppressLint("SimpleDateFormat") Date selectedTimeConverted = new SimpleDateFormat("HH:mm").parse(selectedTime);
                 @SuppressLint("SimpleDateFormat") Date minTimeConverted = new SimpleDateFormat("HH:mm").parse(minTime);

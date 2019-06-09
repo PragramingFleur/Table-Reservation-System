@@ -10,4 +10,7 @@
     <color name="colorReserved">#81d4fa</color>
     <color name="colorTaken">#ef9a9a</color>
     <color name="colorCleaning">#ffcc80</color>
+
+    <color name="itemColorA">#607d8b</color>
+    <color name="itemColorB">#8eacbb</color>
 </resources>
