@@ -1,5 +1,6 @@
 package res.takiisushi.tablereservationsystem;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
@@ -55,6 +56,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         return new ReservationViewHolder(view);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onBindViewHolder(@NonNull ReservationViewHolder reservationViewHolder, int i) {
         if (!mCursor.moveToPosition(i)) {
@@ -65,11 +67,23 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         String guests = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS));
         String number = mCursor.getString(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NUMBER));
         long id = mCursor.getLong(mCursor.getColumnIndex(ReservationContract.ReservationEntry._ID));
+        int isWindow = mCursor.getInt(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_WINDOW));
+        int isBirthday = mCursor.getInt(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_BIRTHDAY));
+        int isSofa = mCursor.getInt(mCursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_SOFA));
 
         reservationViewHolder.timeText.setText(time);
         reservationViewHolder.guestsText.setText(guests);
         reservationViewHolder.numberText.setText(number);
         reservationViewHolder.itemView.setTag(id);
+        if (isWindow == 1) {
+            reservationViewHolder.windowIcon.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getDrawable(R.drawable.ic_window_black_12dp), null);
+        }
+        if (isBirthday == 1) {
+            reservationViewHolder.birthdayIcon.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getDrawable(R.drawable.ic_birthday_black_12dp), null);
+        }
+        if (isSofa == 1) {
+            reservationViewHolder.sofaIcon.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getDrawable(R.drawable.ic_sofa_black_12dp), null);
+        }
 
         List<String> afterTimes = new ArrayList<>();
         List<String> beforeTimes = new ArrayList<>();
@@ -129,54 +143,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         afterTimes.add(after21);
         beforeTimes.add(before22);
 
-        /*//17:00-17:30
-        String after17 = "16:59";
-        String before1730 = "17:30";
-        afterTimes.add(after17);
-        beforeTimes.add(before1730);
-
-        //17:31-18:00
-        String after1730 = "17:30";
-        String before18 = "18:01";
-        afterTimes.add(after1730);
-        beforeTimes.add(before18);
-
-        //18:01-18:30
-        String after18 = "18:00";
-        String before1830 = "18:31";
-        afterTimes.add(after18);
-        beforeTimes.add(before1830);
-
-        //18:31-19:00
-        String after1830 = "18:30";
-        String before19 = "19:01";
-        afterTimes.add(after1830);
-        beforeTimes.add(before19);
-
-        //19:01-19:30
-        String after19 = "19:00";
-        String before1930 = "19:31";
-        afterTimes.add(after19);
-        beforeTimes.add(before1930);
-
-        //19:31-20:00
-        String after1930 = "19:30";
-        String before20 = "20:01";
-        afterTimes.add(after1930);
-        beforeTimes.add(before20);
-
-        //20:01-21:00
-        String after20 = "20:00";
-        String before21 = "21:01";
-        afterTimes.add(after20);
-        beforeTimes.add(before21);
-
-        //21:01-22:00
-        String after21 = "21:00";
-        String before22 = "22:01";
-        afterTimes.add(after21);
-        beforeTimes.add(before22);*/
-
         Calendar afterTime = Calendar.getInstance();
         Calendar beforeTime = Calendar.getInstance();
         Calendar nowTime = Calendar.getInstance();
@@ -186,9 +152,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             e.printStackTrace();
         }
         Date curDate = nowTime.getTime();
-
-        int colorA = mContext.getResources().getColor(R.color.itemColorA);
-        int colorB = mContext.getResources().getColor(R.color.itemColorB);
 
         for (int counter = 0; counter < afterTimes.size(); counter++) {
             try {
@@ -202,9 +165,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                 Log.d(TAG, "onBindViewHolder: after time: " + afterTime.getTime().toString() + " before time: " + beforeTime.getTime().toString() + "now time: " + nowTime.getTime().toString());
 
                 if (counter % 2 == 0) {
-                    reservationViewHolder.itemView.setBackgroundColor(colorA);
+                    reservationViewHolder.itemView.setBackground(mContext.getDrawable(R.drawable.rounded_darkbluegrey_shape));
                 } else {
-                    reservationViewHolder.itemView.setBackgroundColor(colorB);
+                    reservationViewHolder.itemView.setBackground(mContext.getDrawable(R.drawable.rounded_lightbluegrey_shape));
                 }
             }
         }
@@ -231,6 +194,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         public TextView timeText;
         public TextView guestsText;
         public TextView numberText;
+        public TextView windowIcon;
+        public TextView birthdayIcon;
+        public TextView sofaIcon;
 
         public ReservationViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -238,6 +204,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             timeText = itemView.findViewById(R.id.reservationTime);
             guestsText = itemView.findViewById(R.id.reservationGuests);
             numberText = itemView.findViewById(R.id.reservationMobileNum);
+            windowIcon = itemView.findViewById(R.id.reservationWindow);
+            birthdayIcon = itemView.findViewById(R.id.reservationBirthday);
+            sofaIcon = itemView.findViewById(R.id.reservationSofa);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

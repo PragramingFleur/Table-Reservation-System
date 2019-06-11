@@ -15,6 +15,9 @@ public class ReservationContract {
         public static final String COLUMN_DATE = "date";
         public static final String COLUMN_GUESTS = "guests";
         public static final String COLUMN_ARRIVED = "arrived";
+        public static final String COLUMN_WINDOW = "window";
+        public static final String COLUMN_BIRTHDAY = "birthday";
+        public static final String COLUMN_SOFA = "sofa";
     }
 
 }

@@ -34,7 +34,7 @@
     <string name="table_title">Bord</string>
     <string name="time_title">Tid</string>
     <string name="select_date">Vælg dato</string>
-    <string name="mobile_number_title">Mobilnummer</string>
+    <string name="mobile_number_title">Mobil</string>
     <string name="guest_title">Gæster</string>
     <string name="add_reservation_button">Tap til at tilføj en reservation</string>
     <string name="help_button_text">Hjælp</string>
@@ -59,4 +59,8 @@
     <string name="edit_text">Rediger</string>
     <string name="id_text">ID</string>
     <string name="reservation_history_title">Reservation Historik</string>
+    <string name="birthday">Fødselsdag</string>
+    <string name="sofa">Sofa</string>
+    <string name="window">Vindue</string>
+    <string name="special">Ønsker</string>
 </resources>

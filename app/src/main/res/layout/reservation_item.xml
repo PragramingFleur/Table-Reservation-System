@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="4dp"
     android:gravity="center"
     android:padding="8dp">
 
@@ -13,7 +14,7 @@
         android:gravity="start"
         android:padding="8dp"
         android:text="00:00"
-        android:textSize="18sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/reservationGuests"
@@ -24,7 +25,7 @@
         android:padding="8dp"
         android:text="0V + 0B"
         android:textAllCaps="true"
-        android:textSize="18sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/reservationMobileNum"
@@ -34,6 +35,31 @@
         android:gravity="start"
         android:padding="8dp"
         android:text="12345678"
-        android:textSize="18sp" />
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/reservationWindow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:padding="2dp"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/reservationBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/reservationSofa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:textSize="12sp" />
 
 </LinearLayout>

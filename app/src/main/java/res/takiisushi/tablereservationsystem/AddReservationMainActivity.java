@@ -15,12 +15,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +47,9 @@ public class AddReservationMainActivity extends AppCompatActivity
     private TextView editTime;
     private EditText editAdultGuestNum;
     private EditText editChildGuestNum;
+    private int isWindow;
+    private int isBirthday;
+    private int wantsSofa;
 
     private SQLiteDatabase database;
     private ReservationAdapter adapter;
@@ -132,6 +137,9 @@ public class AddReservationMainActivity extends AppCompatActivity
         values.put(ReservationEntry.COLUMN_DATE, dbDate);
         values.put(ReservationEntry.COLUMN_GUESTS, guests);
         values.put(ReservationEntry.COLUMN_ARRIVED, 0);
+        values.put(ReservationEntry.COLUMN_BIRTHDAY, isBirthday);
+        values.put(ReservationEntry.COLUMN_WINDOW, isWindow);
+        values.put(ReservationEntry.COLUMN_SOFA, wantsSofa);
 
         database.insert(ReservationEntry.TABLE_NAME, null, values);
         adapter.swapCursor(getAllItems());
@@ -296,7 +304,7 @@ public class AddReservationMainActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         TextView editTime = findViewById(R.id.selectTimeNewReservation);
-        editTime.setText(hourOfDay + ":" + minute);
+        editTime.setText(hourOfDay + ":" + new DecimalFormat("00").format(minute));
     }
 
     @Override
@@ -311,5 +319,36 @@ public class AddReservationMainActivity extends AppCompatActivity
             return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch (view.getId()) {
+            case R.id.checkbox_window:
+                if (checked)
+                    isWindow = 1;
+                else
+                    isWindow = 0;
+                break;
+            case R.id.checkbox_birthday:
+                if (checked)
+                    isBirthday = 1;
+                else
+                    isBirthday = 0;
+            case R.id.checkbox_sofa:
+                if (checked)
+                    wantsSofa = 1;
+                else
+                    wantsSofa = 0;
+                break;
+            default:
+                isBirthday = 0;
+                isWindow = 0;
+                wantsSofa = 0;
+                break;
+        }
     }
 }

@@ -34,7 +34,6 @@
     <string name="time_title">Time</string>
     <string name="guest_title">Guests</string>
     <string name="table_title">Table</string>
-    <string name="mobile_number_title">Mobile Number</string>
     <string name="select_date">Select Date</string>
     <string name="order_drink_button_text">Order Drinks</string>
     <string name="ready_to_submit_button">Ready to Submit Order</string>
@@ -92,4 +91,9 @@
     <string name="edit_text">Edit</string>
     <string name="id_text">ID</string>
     <string name="reservation_history_title">Reservation History</string>
+    <string name="window">Window</string>
+    <string name="sofa">Sofa</string>
+    <string name="birthday">Birthday</string>
+    <string name="special">Special</string>
+    <string name="mobile_number_title">Mobile Num.</string>
 </resources>
