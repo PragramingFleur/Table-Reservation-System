@@ -1,5 +1,6 @@
 package res.takiisushi.tablereservationsystem;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -49,6 +50,7 @@ public class EditReservationMainActivity extends AppCompatActivity
     private EditText editName;
     private EditText editNumber;
     private TextView editDate;
+    private String dbDate;
     private TextView editTime;
     private EditText editAdultGuestNum;
     private EditText editChildGuestNum;
@@ -85,6 +87,7 @@ public class EditReservationMainActivity extends AppCompatActivity
 
         //set all necessary fields
         setFormFields(id);
+        dbDate = editDate.getText().toString();
 
         //Sets up action bar menus and title
         setupActionBar();
@@ -102,7 +105,7 @@ public class EditReservationMainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 //Makes sure fields are correct before adding to db
-                boolean isCorrect = checkFields(editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum);
+                boolean isCorrect = checkFields(editNumber, editTime, editAdultGuestNum, editChildGuestNum);
                 if (isCorrect) {
                     //adds reservation to the db
                     editReservationToDB(editName, editNumber, editDate, editTime, editAdultGuestNum, editChildGuestNum, id);
@@ -133,6 +136,7 @@ public class EditReservationMainActivity extends AppCompatActivity
                 }
                 editNumber.setText(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_NUMBER)));
                 editDate.setText(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_DATE)));
+                dbDate = cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_DATE));
                 editTime.setText(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_TIME)));
                 List<String> guests = Arrays.asList(cursor.getString(cursor.getColumnIndex(ReservationContract.ReservationEntry.COLUMN_GUESTS)).split("\\s+"));
                 editAdultGuestNum.setText(guests.get(1));
@@ -173,7 +177,7 @@ public class EditReservationMainActivity extends AppCompatActivity
         values.put(ReservationContract.ReservationEntry.COLUMN_NAME, editName.getText().toString().trim());
         values.put(ReservationContract.ReservationEntry.COLUMN_NUMBER, editNumber.getText().toString().trim());
         values.put(ReservationContract.ReservationEntry.COLUMN_TIME, editTime.getText().toString());
-        values.put(ReservationContract.ReservationEntry.COLUMN_DATE, editDate.getText().toString());
+        values.put(ReservationContract.ReservationEntry.COLUMN_DATE, dbDate);
         values.put(ReservationContract.ReservationEntry.COLUMN_GUESTS, guests);
         values.put(ReservationContract.ReservationEntry.COLUMN_TABLES, tableSelected);
 
@@ -186,17 +190,17 @@ public class EditReservationMainActivity extends AppCompatActivity
         mContext.startActivity(intent);
     }
 
-    private boolean checkFields(EditText editNumber, TextView editDate, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
+    private boolean checkFields(EditText editNumber, TextView editTime, EditText editAdultGuestNum, EditText editChildGuestNum) {
         List<Boolean> isCorrectCollection = new ArrayList<>();
-        boolean isCorrect = false;
+        boolean isCorrect;
 
         Calendar c = Calendar.getInstance();
-        Date today = c.getTime();
+        String today = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
 
         TextView tableWarning = findViewById(R.id.tableTextView);
 
         //Check if required fields are filled out
-        if (editNumber.getText().toString().trim().length() < 8 || editNumber.getText().toString().trim().length() > 8) {
+        if (editNumber.getText().toString().trim().length() < 8) {
             //Number field is empty or less than 8digits which is wrong
             isCorrectCollection.add(false);
             editNumber.setError("Invalid Number");
@@ -207,11 +211,11 @@ public class EditReservationMainActivity extends AppCompatActivity
 
         if (!editDate.getText().toString().isEmpty()) {
             //If date textview is not empty then check if the date is before today
-            String datePicked = editDate.getText().toString();
             try {
-                Date strDate = new SimpleDateFormat("yyyy/MM/dd").parse(datePicked);
+                @SuppressLint("SimpleDateFormat") Date datePicked = new SimpleDateFormat("yyyy-MM-dd").parse(dbDate);
+                @SuppressLint("SimpleDateFormat") Date todayDate = new SimpleDateFormat("yyyy-MM-dd").parse(today);
 
-                if (today.after(strDate)) {
+                if (todayDate.after(datePicked)) {
                     //date isn't supposed to be before today
                     isCorrectCollection.add(false);
                     editDate.setError("Date has to be today or later");
@@ -233,9 +237,9 @@ public class EditReservationMainActivity extends AppCompatActivity
                 String minTime = "13:00";
                 String maxTime = "22:00";
 
-                Date selectedTimeConverted = new SimpleDateFormat("HH:mm").parse(selectedTime);
-                Date minTimeConverted = new SimpleDateFormat("HH:mm").parse(minTime);
-                Date maxTimeConverted = new SimpleDateFormat("HH:mm").parse(maxTime);
+                @SuppressLint("SimpleDateFormat") Date selectedTimeConverted = new SimpleDateFormat("HH:mm").parse(selectedTime);
+                @SuppressLint("SimpleDateFormat") Date minTimeConverted = new SimpleDateFormat("HH:mm").parse(minTime);
+                @SuppressLint("SimpleDateFormat") Date maxTimeConverted = new SimpleDateFormat("HH:mm").parse(maxTime);
 
                 Calendar calendar = Calendar.getInstance();
                 Calendar calendarA = Calendar.getInstance();
@@ -397,6 +401,9 @@ public class EditReservationMainActivity extends AppCompatActivity
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        dbDate = year + "-" + month + "-" + dayOfMonth;
+        Log.d(TAG, "onDateSet: " + dbDate);
 
         String selectedDateString = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
 
